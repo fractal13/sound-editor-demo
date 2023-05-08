@@ -19,7 +19,7 @@ namespace little_endian_io
 }
 
 int main() {
-  std::ofstream f( "C4.wav", std::ios::binary );
+  std::ofstream f( "my_first.wav", std::ios::binary );
 
   // Write the file headers
   f << "RIFF----WAVEfmt ";     // (chunk size to be filled in later)
@@ -41,15 +41,19 @@ int main() {
   constexpr double max_amplitude = 32760;  // "volume"
 
   double hz        = 44100;    // samples per second
-  double frequency = 261.626;  // middle C
+  double frequency1 = 261.626;  // middle C
+  double frequency2 = 523.251;  // C5?
   double seconds   = 2.5;      // time
 
   int N = hz * seconds;  // total number of samples
   for (int n = 0; n < N; n++) {
     double amplitude = (double)n / N * max_amplitude;
-    double value     = sin( (two_pi * n * frequency) / hz );
-    little_endian_io::write_word( f, (int)(                 amplitude  * value), 2 );
-    little_endian_io::write_word( f, (int)((max_amplitude - amplitude) * value), 2 );
+    double value1     = sin( (two_pi * n * frequency1) / hz );
+    double value2     = sin( (two_pi * n * frequency2) / hz );
+    // left channel
+    little_endian_io::write_word( f, (int)(                 amplitude  * value1), 2 );
+    // right channel
+    little_endian_io::write_word( f, (int)((max_amplitude - amplitude) * value2), 2 );
   }
   
   // (We'll need the final file size to fix the chunk sizes above)
