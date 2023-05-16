@@ -11,6 +11,9 @@ wave: C4 my_first my_second mary_song mary_refactor
 	./mary_song
 	./mary_refactor
 
+mary_refactor.wav: mary_refactor
+	./mary_refactor
+
 C4: C4.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
