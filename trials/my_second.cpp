@@ -6,6 +6,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 namespace little_endian_io
 {
@@ -18,8 +19,26 @@ namespace little_endian_io
   }
 }
 
+void attack_and_decline(const double max_amplitude, const double hz,
+                        const double attack_seconds, const double attack_min,
+                        const double decline_seconds, const double decline_min,
+                        std::vector<double>& amplitude) {
+  const double total_seconds = attack_seconds + decline_seconds;
+  const double d_size = total_seconds * hz;
+  unsigned int u_size = (unsigned int)d_size;
+  unsigned int u_attack_end = (unsigned int)(attack_seconds * hz);
+  amplitude.resize(u_size);
+  unsigned int i;
+  for(i = 0; i < u_attack_end; i++) {
+    amplitude[i] = attack_min + i * (max_amplitude - attack_min) / u_attack_end;
+  }
+  for(i = u_attack_end; i < u_size; i++) {
+    amplitude[i] = max_amplitude - (i-u_attack_end) * (max_amplitude - decline_min) / (u_size-u_attack_end);
+  }
+}
+
 int main() {
-  std::ofstream f( "my_first.wav", std::ios::binary );
+  std::ofstream f( "my_second.wav", std::ios::binary );
 
   // Write the file headers
   f << "RIFF----WAVE"; // (chunk size to be filled in later)                     (ChunkID/ChunkSize/Format)
@@ -42,19 +61,28 @@ int main() {
   constexpr double max_amplitude = 32760;  // "volume"
 
   double hz        = 44100;    // samples per second
-  double frequency1 = 261.626;  // middle C
+  double frequency1 = 523.251;  // 
   double frequency2 = 523.251;  // C5?
   double seconds   = 2.5;      // time
 
+  double attack_seconds = 0.1;
+  double decline_seconds = seconds - attack_seconds;
+  double attack_min = 0.0;
+  double decline_min = 0.0;
+
+  std::vector<double> amplitude;
+  attack_and_decline(max_amplitude, hz, attack_seconds, attack_min, decline_seconds, decline_min, amplitude);
+
+
   int N = hz * seconds;  // total number of samples
   for (int n = 0; n < N; n++) {
-    double amplitude = (double)n / N * max_amplitude;
+    //double amplitude = (double)n / N * max_amplitude;
     double value1     = sin( (two_pi * n * frequency1) / hz );
     double value2     = sin( (two_pi * n * frequency2) / hz );
     // left channel
-    little_endian_io::write_word( f, (int)(                 amplitude  * value1), 2 );
+    little_endian_io::write_word( f, (int)(amplitude[n] * value1), 2 );
     // right channel
-    little_endian_io::write_word( f, (int)((max_amplitude - amplitude) * value2), 2 );
+    little_endian_io::write_word( f, (int)(amplitude[n] * value2), 2 );
   }
   
   // (We'll need the final file size to fix the chunk sizes above)

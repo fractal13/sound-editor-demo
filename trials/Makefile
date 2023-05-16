@@ -2,12 +2,20 @@ CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror
 LDFLAGS :=
 
-all: C4 my_first
+all: C4 my_first my_second
+
+wave: C4 my_first my_second
+	./C4
+	./my_first
+	./my_second
 
 C4: C4.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 my_first: my_first.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+my_second: my_second.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 ######################################
