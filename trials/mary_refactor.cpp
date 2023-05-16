@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 #include <exception>
+#include <sstream>
 
 /*******************************************************************
  * Note class start
@@ -282,7 +283,7 @@ namespace little_endian_io
 
 class WaveFile {
 public:
-  WaveFile(const std::string& filename, int samples_per_second);
+  WaveFile(const std::string& filename, int samples_per_second, int bits_per_sample);
   ~WaveFile();
 
   void writeHeader();
@@ -295,10 +296,29 @@ private:
   std::ofstream mFile;
   int mSamplesPerSecond;
   size_t mDataSubchunkPosition;
+  int mBitsPerSample;
+  int mMaximumAmplitude;
+  int mBytesPerSample;
 };
 
-WaveFile::WaveFile(const std::string& filename, int samples_per_second)
-  : mFile(filename, std::ios::binary), mSamplesPerSecond(samples_per_second), mDataSubchunkPosition(0) {
+WaveFile::WaveFile(const std::string& filename, int samples_per_second, int bits_per_sample)
+  : mFile(filename, std::ios::binary), mSamplesPerSecond(samples_per_second), mDataSubchunkPosition(0), mBitsPerSample(bits_per_sample) {
+  mMaximumAmplitude = (1<<(mBitsPerSample-1)) - 1;
+  mBytesPerSample = mBitsPerSample/8;
+  switch(mBitsPerSample) {
+  case 8:
+    /* fall through */
+  case 16:
+    /* fall through */
+  case 24:
+    /* fall through */
+  case 32:
+    /* all allowed */
+    break;
+  default:
+    throw std::exception();
+    break;
+  }
 }
 
 WaveFile::~WaveFile() {
@@ -308,16 +328,18 @@ WaveFile::~WaveFile() {
 }
 
 void WaveFile::writeHeader() {
+  int byte_rate = (mSamplesPerSecond * mBitsPerSample * 2) / 8;
+  int data_block_size = (mBitsPerSample * 2) / 8;
   // Write the file header
   mFile << "RIFF----WAVE"; // (chunk size to be filled in later)                     (ChunkID/ChunkSize/Format)
   mFile << "fmt ";         //                                                        (Subchunk1 ID)
-  little_endian_io::write_word( mFile,     16, 4 );  // no extension data            (subchunk1 size)
-  little_endian_io::write_word( mFile,      1, 2 );  // PCM - integer samples        (audio format)
-  little_endian_io::write_word( mFile,      2, 2 );  // two channels (stereo file)   (num channels)
+  little_endian_io::write_word( mFile,                16, 4 );  // no extension data            (subchunk1 size)
+  little_endian_io::write_word( mFile,                 1, 2 );  // PCM - integer samples        (audio format)
+  little_endian_io::write_word( mFile,                 2, 2 );  // two channels (stereo file)   (num channels)
   little_endian_io::write_word( mFile, mSamplesPerSecond, 4 );  // samples per second (Hz)      (sample rate)
-  little_endian_io::write_word( mFile, 176400, 4 );  // (Sample Rate * BitsPerSample * Channels) / 8   (byte rate)
-  little_endian_io::write_word( mFile,      4, 2 );  // data block size (size of two integer samples, one for each channel, in bytes)  (block align)
-  little_endian_io::write_word( mFile,     16, 2 );  // number of bits per sample (use a multiple of 8)                                (BitsPerSample)
+  little_endian_io::write_word( mFile,         byte_rate, 4 );  // (Sample Rate * BitsPerSample * Channels) / 8   (byte rate)
+  little_endian_io::write_word( mFile,   data_block_size, 2 );  // data block size (size of two integer samples, one for each channel, in bytes)  (block align)
+  little_endian_io::write_word( mFile,    mBitsPerSample, 2 );  // number of bits per sample (use a multiple of 8)                                (BitsPerSample)
 }
 
 void WaveFile::writeDataSubchunkHeader() {
@@ -327,12 +349,12 @@ void WaveFile::writeDataSubchunkHeader() {
 }
 
 void WaveFile::writeNotes(const std::vector<Note>& notes) {
-  constexpr double max_amplitude = 32760;  // "volume"
+  double max_amplitude = mMaximumAmplitude;  // "volume"
   double attack_seconds  = 0.10;
   double decay_seconds   = 0.05;
   double release_seconds = 0.10;
   double sustain_amplitude = max_amplitude * 0.5;
-  Instrument instrument;
+  Instrument4 instrument;
   Envelope envelope(max_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
   //double whole_note_seconds = 4.0*60.0/80.0; // q=80
   double whole_note_seconds = 4.0*60.0/120.0; // q=120
@@ -350,9 +372,9 @@ void WaveFile::writeNotes(const std::vector<Note>& notes) {
       double value1 = samples[n];
       double value2 = value1;
       // left channel
-      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value1), 2);
+      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value1), mBytesPerSample);
       // right channel
-      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value2), 2);
+      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value2), mBytesPerSample);
     }
   }
 }
@@ -420,12 +442,18 @@ void read_notes(std::vector<Note>& notes) {
   notes.push_back(Note("C4", WHOLE_NOTE));
 }
 
-int main() {
+int main(int argc, char **argv) {
+  int bits_per_sample = 16;
+  if(argc > 1) {
+    std::stringstream arg(argv[1]);
+    arg >> bits_per_sample;
+  }
+
   std::vector<Note> notes;
   read_notes(notes);
 
-  double hz          = 44100;    // samples per second
-  WaveFile wave("mary_refactor.wav", hz);
+  int samples_per_second = 44100;    // samples per second
+  WaveFile wave("mary_refactor.wav", samples_per_second, bits_per_sample);
   wave.writeHeader();
   wave.writeDataSubchunkHeader();
   wave.writeNotes(notes);
