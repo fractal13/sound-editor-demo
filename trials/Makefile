@@ -2,13 +2,14 @@ CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror
 LDFLAGS :=
 
-all: C4 my_first my_second mary_song
+all: C4 my_first my_second mary_song mary_refactor
 
-wave: C4 my_first my_second mary_song
+wave: C4 my_first my_second mary_song mary_refactor
 	./C4
 	./my_first
 	./my_second
 	./mary_song
+	./mary_refactor
 
 C4: C4.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
@@ -20,6 +21,9 @@ my_second: my_second.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 mary_song: mary_song.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+mary_refactor: mary_refactor.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 ######################################
