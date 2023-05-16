@@ -9,7 +9,7 @@
 #include <vector>
 #include <map>
 #include <string>
-
+#include <exception>
 
 /*******************************************************************
  * Note class start
@@ -73,21 +73,66 @@ double Note::getFrequency() const {
  * Envelope start
  */
 
-void attack_and_decline(const double max_amplitude, const double hz,
-                        const double attack_seconds, const double attack_min,
-                        const double decline_seconds, const double decline_min,
-                        std::vector<double>& amplitude) {
-  const double total_seconds = attack_seconds + decline_seconds;
-  const double d_size = total_seconds * hz;
-  unsigned int u_size = (unsigned int)d_size;
-  unsigned int u_attack_end = (unsigned int)(attack_seconds * hz);
-  amplitude.resize(u_size);
-  unsigned int i;
-  for(i = 0; i < u_attack_end; i++) {
-    amplitude[i] = attack_min + i * (max_amplitude - attack_min) / u_attack_end;
+class Envelope {
+public:
+  Envelope(const double max_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_amplitude);
+  void generateAmplitudes(std::vector<double>& amplitudes, const double seconds, const int samples_per_second) const;
+private:
+  double mMaximumAmplitude;
+  // Attack, Decay, Sustain, Release
+  double mAttackSeconds;
+  double mDecaySeconds;
+  double mSustainAmplitude;
+  double mReleaseSeconds;
+};
+
+Envelope::Envelope(const double max_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds)
+  : mMaximumAmplitude(max_amplitude), mAttackSeconds(attack_seconds), mDecaySeconds(decay_seconds), mSustainAmplitude(sustain_amplitude), mReleaseSeconds(release_seconds) {
+}
+
+void Envelope::generateAmplitudes(std::vector<double>& amplitudes, const double seconds, const int samples_per_second) const {
+  if(seconds < mAttackSeconds + mDecaySeconds + mReleaseSeconds) {
+    throw std::exception();
   }
-  for(i = u_attack_end; i < u_size; i++) {
-    amplitude[i] = max_amplitude - (i-u_attack_end) * (max_amplitude - decline_min) / (u_size-u_attack_end);
+  int N = samples_per_second * seconds;  // total number of samples
+  amplitudes.resize(N);
+  int attack_n = samples_per_second * mAttackSeconds;
+  int decay_n = attack_n + samples_per_second * mDecaySeconds;
+  int sustain_n = N - samples_per_second * mReleaseSeconds;
+  int release_n = N;
+  int i;
+  double m, x, b;
+
+  // attack from 0 to full
+  b = 0.0;
+  m = mMaximumAmplitude / (attack_n - 0);
+  for(i = 0; i < attack_n; i++) {
+    x = i;
+    amplitudes[i] = m*x+b;
+  }
+
+  // decay from full to sustain
+  b = mMaximumAmplitude;
+  m = (mSustainAmplitude - mMaximumAmplitude) / (decay_n - attack_n);
+  for(i = attack_n; i < decay_n; i++) {
+    x = i-attack_n;
+    amplitudes[i] = m*x+b;
+  }
+  
+  // sustain
+  b = mSustainAmplitude;
+  m = 0;
+  for(i = decay_n; i < sustain_n; i++) {
+    x = i-decay_n;
+    amplitudes[i] = m*x+b;
+  }
+  
+  // decay from sustain to 0.0 (release)
+  b = mSustainAmplitude;
+  m = (0 - mSustainAmplitude) / (release_n - sustain_n);
+  for(i = sustain_n; i < release_n; i++) {
+    x = i-sustain_n;
+    amplitudes[i] = m*x+b;
   }
 }
 
@@ -105,14 +150,14 @@ constexpr double two_pi = 6.283185307179586476925286766559;
 class Instrument {
 public:
   Instrument();
-  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second);
+  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const;
 private:
 };
 
 Instrument::Instrument() {
 }
 
-void Instrument::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) {
+void Instrument::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
   
   int N = samples_per_second * seconds;  // total number of samples
   samples.resize(N);
@@ -125,7 +170,7 @@ void Instrument::generateSamples(std::vector<double>& samples, const double freq
 class Instrument2: public Instrument {
 public:
   Instrument2();
-  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second);
+  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const;
 private:
 };
 
@@ -133,7 +178,7 @@ Instrument2::Instrument2()
   : Instrument() {
 }
 
-void Instrument2::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) {
+void Instrument2::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
 
   int N = samples_per_second * seconds;  // total number of samples
   samples.resize(N);
@@ -151,7 +196,7 @@ void Instrument2::generateSamples(std::vector<double>& samples, const double fre
 class Instrument3: public Instrument {
 public:
   Instrument3();
-  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second);
+  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const;
 private:
 };
 
@@ -159,7 +204,7 @@ Instrument3::Instrument3()
   : Instrument() {
 }
 
-void Instrument3::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) {
+void Instrument3::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
 
   int N = samples_per_second * seconds;  // total number of samples
   samples.resize(N);
@@ -190,7 +235,7 @@ void Instrument3::generateSamples(std::vector<double>& samples, const double fre
 class Instrument4: public Instrument {
 public:
   Instrument4();
-  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second);
+  virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const;
 private:
 };
 
@@ -198,7 +243,7 @@ Instrument4::Instrument4()
   : Instrument() {
 }
 
-void Instrument4::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) {
+void Instrument4::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
 
   int N = samples_per_second * seconds;  // total number of samples
   samples.resize(N);
@@ -283,19 +328,20 @@ void WaveFile::writeDataSubchunkHeader() {
 
 void WaveFile::writeNotes(const std::vector<Note>& notes) {
   constexpr double max_amplitude = 32760;  // "volume"
-  Instrument4 instrument;
+  double attack_seconds  = 0.10;
+  double decay_seconds   = 0.05;
+  double release_seconds = 0.10;
+  double sustain_amplitude = max_amplitude * 0.5;
+  Instrument instrument;
+  Envelope envelope(max_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
   //double whole_note_seconds = 4.0*60.0/80.0; // q=80
   double whole_note_seconds = 4.0*60.0/120.0; // q=120
   for(auto& note: notes) {
     double frequency = note.getFrequency();
     double seconds = note.getDuration() * whole_note_seconds;
 
-    double attack_seconds = 0.1 * seconds;
-    double decline_seconds = seconds - attack_seconds;
-    double attack_min = 0.0;
-    double decline_min = 0.0;
-    std::vector<double> amplitude;
-    attack_and_decline(max_amplitude, mSamplesPerSecond, attack_seconds, attack_min, decline_seconds, decline_min, amplitude);
+    std::vector<double> amplitudes;
+    envelope.generateAmplitudes(amplitudes, seconds, mSamplesPerSecond);
     std::vector<double> samples;
     instrument.generateSamples(samples, frequency, seconds, mSamplesPerSecond);
 
@@ -304,9 +350,9 @@ void WaveFile::writeNotes(const std::vector<Note>& notes) {
       double value1 = samples[n];
       double value2 = value1;
       // left channel
-      little_endian_io::write_word(mFile, (int)(amplitude[n] * value1), 2);
+      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value1), 2);
       // right channel
-      little_endian_io::write_word(mFile, (int)(amplitude[n] * value2), 2);
+      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value2), 2);
     }
   }
 }
