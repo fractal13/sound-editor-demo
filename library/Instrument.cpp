@@ -3,6 +3,9 @@
 #include <cmath>
 
 
+Instrument::Instrument() {
+}
+
 void Instrument::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
   
   int N = samples_per_second * seconds;  // total number of samples

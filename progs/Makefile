@@ -1,15 +1,15 @@
+INCLUDE_DIRS := -I ../library
+LIBRARY_DIRS := -L ../library
+
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror
-LDFLAGS :=
-SRCS    := $(sort $(wildcard *.cpp))
-MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) | awk -F: '{print $$1;}' | uniq)
-COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
-COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror $(INCLUDE_DIRS)
+LDFLAGS := $(LIBRARY_DIRS) -lsynth
 
-all: libsynth.a
+all: mary_lib
 
-libsynth.a: $(COMMON_OBJECTS)
-	ar Urus $@ $^
+mary_lib: mary_lib.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
 
 ######################################
 # automatic dependency generation
@@ -29,7 +29,7 @@ POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
 
-include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(COMMON_SRCS))))
+include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 #
 #
 ######################################
