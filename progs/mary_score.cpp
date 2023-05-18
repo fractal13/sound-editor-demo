@@ -10,7 +10,7 @@ void read_score(MusicalScore& score) {
 
   unsigned int treble_index = score.createStaff();
   MusicalStaff& treble = score.getStaff(treble_index);
-  treble.setInstrument(new Instrument);
+  treble.setInstrument(new Instrument4);
   treble.addNote(StaffNote(Note("E4", QUARTER_NOTE), 0.00));
   treble.addNote(StaffNote(Note("D4", QUARTER_NOTE), 0.25));
   treble.addNote(StaffNote(Note("C4", QUARTER_NOTE), 0.50));
@@ -41,7 +41,7 @@ void read_score(MusicalScore& score) {
 
   unsigned int base_index = score.createStaff();
   MusicalStaff& base = score.getStaff(base_index);
-  base.setInstrument(new Instrument);
+  base.setInstrument(new Instrument2);
   base.addNote(StaffNote(Note("C3", HALF_NOTE),      0.00));
   base.addNote(StaffNote(Note("G3", HALF_NOTE),      0.50));
   base.addNote(StaffNote(Note("C3", HALF_NOTE),      1.00));
