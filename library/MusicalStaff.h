@@ -9,6 +9,7 @@ class MusicalStaff {
 public:
   MusicalStaff(); // defaults to no Instrument, and no notes
   MusicalStaff(Instrument *instrument); // defaults to no notes
+  MusicalStaff(const MusicalStaff& src); // copy constructor
   ~MusicalStaff();
 
   Instrument& getInstrument();
@@ -17,6 +18,8 @@ public:
 
   void addNote(const StaffNote& note);
   const std::vector<StaffNote>& getNotes() const;
+
+  double getDurationInWholeNotes() const;
 
 private:
   Instrument             *mInstrument; // instrument to perform these notes

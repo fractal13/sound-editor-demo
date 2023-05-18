@@ -14,6 +14,7 @@ public:
   void writeHeader();
   void writeDataSubchunkHeader();
   void writeNotes(const std::vector<Note>& notes);
+  void writeValues(const std::vector<std::vector<double>>& values);
   void writeSizes();
   void close();
 

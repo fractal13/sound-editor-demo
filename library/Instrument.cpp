@@ -6,6 +6,9 @@
 Instrument::Instrument() {
 }
 
+Instrument::~Instrument() {
+}
+
 void Instrument::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
   
   int N = samples_per_second * seconds;  // total number of samples
@@ -16,8 +19,18 @@ void Instrument::generateSamples(std::vector<double>& samples, const double freq
   }
 }
 
+Instrument* Instrument::clone() const {
+  Instrument *copy = new Instrument;
+  *copy = *this;
+  return copy;
+}
+
+
 Instrument2::Instrument2() 
   : Instrument() {
+}
+
+Instrument2::~Instrument2() {
 }
 
 void Instrument2::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
@@ -35,8 +48,17 @@ void Instrument2::generateSamples(std::vector<double>& samples, const double fre
   }
 }
 
+Instrument* Instrument2::clone() const {
+  Instrument2 *copy = new Instrument2;
+  *copy = *this;
+  return copy;
+}
+
 Instrument3::Instrument3() 
   : Instrument() {
+}
+
+Instrument3::~Instrument3() {
 }
 
 void Instrument3::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
@@ -67,8 +89,18 @@ void Instrument3::generateSamples(std::vector<double>& samples, const double fre
   }
 }
 
+Instrument* Instrument3::clone() const {
+  Instrument3 *copy = new Instrument3;
+  *copy = *this;
+  return copy;
+}
+
+
 Instrument4::Instrument4() 
   : Instrument() {
+}
+
+Instrument4::~Instrument4() {
 }
 
 void Instrument4::generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const {
@@ -87,3 +119,11 @@ void Instrument4::generateSamples(std::vector<double>& samples, const double fre
     samples[n] = value;
   }
 }
+
+Instrument* Instrument4::clone() const {
+  Instrument4 *copy = new Instrument4;
+  *copy = *this;
+  return copy;
+}
+
+

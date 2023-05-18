@@ -16,8 +16,11 @@ public:
   void setTempo(const double tempo);
 
   unsigned int createStaff(); // adds a new MusicalStaff, returns its index
-  MusicalStaff& getStaff(const unsigned int index); 
-  const MusicalStaff& getStaff(const unsigned int index) const; 
+  MusicalStaff& getStaff(const unsigned int index);
+  const MusicalStaff& getStaff(const unsigned int index) const;
+  unsigned int getNumberOfStaves() const;
+
+  void renderStaff(const unsigned int index, const int samples_per_second, std::vector<double>& values) const;
 
 private:
   TimeSignature mTimeSignature;      // 

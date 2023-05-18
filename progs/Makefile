@@ -2,10 +2,10 @@ INCLUDE_DIRS := -I ../library
 LIBRARY_DIRS := -L ../library
 
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror $(INCLUDE_DIRS)
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -g $(INCLUDE_DIRS)
 LDFLAGS := $(LIBRARY_DIRS) -lsynth
 
-all: mary_lib
+all: mary_lib mary_score
 
 mary_lib: mary_lib.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
@@ -13,8 +13,14 @@ mary_lib: mary_lib.o
 mary_lib.wav: mary_lib
 	./mary_lib
 
-play: mary_lib.wav
-	play mary_lib.wav
+mary_score: mary_score.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+mary_score.wav: mary_score
+	./mary_score
+
+play: mary_score.wav
+	play mary_score.wav
 
 ######################################
 # automatic dependency generation

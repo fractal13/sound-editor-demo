@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -g
 LDFLAGS :=
 SRCS    := $(sort $(wildcard *.cpp))
 MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) | awk -F: '{print $$1;}' | uniq)

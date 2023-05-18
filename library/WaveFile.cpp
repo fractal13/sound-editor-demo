@@ -97,6 +97,22 @@ void WaveFile::writeNotes(const std::vector<Note>& notes) {
   }
 }
 
+void WaveFile::writeValues(const std::vector<std::vector<double>>& values) {
+  if(values.size() != 2) {
+    // hack stereo for now, still need a mixer
+    throw std::exception();
+  }
+  if(values[0].size() != values[1].size()) {
+    // hack same same
+    throw std::exception();
+  }
+  unsigned int n;
+  for(n = 0; n < values[0].size(); n++) {
+    little_endian_io::write_word(mFile, (int)(values[0][n] * mMaximumAmplitude), mBytesPerSample);
+    little_endian_io::write_word(mFile, (int)(values[1][n] * mMaximumAmplitude), mBytesPerSample);
+  }
+}
+
 void WaveFile::writeSizes() {
   size_t file_length = mFile.tellp();
   size_t data_size = file_length - (mDataSubchunkPosition + 8);
