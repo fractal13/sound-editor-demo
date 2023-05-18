@@ -10,6 +10,11 @@ all: mary_lib
 mary_lib: mary_lib.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+mary_lib.wav: mary_lib
+	./mary_lib
+
+play: mary_lib.wav
+	play mary_lib.wav
 
 ######################################
 # automatic dependency generation

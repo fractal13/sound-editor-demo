@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   read_notes(notes);
 
   int samples_per_second = 44100;    // samples per second
-  WaveFile wave("mary_refactor.wav", samples_per_second, bits_per_sample);
+  WaveFile wave("mary_lib.wav", samples_per_second, bits_per_sample);
   wave.writeHeader();
   wave.writeDataSubchunkHeader();
   wave.writeNotes(notes);

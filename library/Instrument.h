@@ -7,6 +7,7 @@ constexpr double two_pi = 6.283185307179586476925286766559;
 class Instrument {
 public:
   Instrument();
+  virtual ~Instrument();
   virtual void generateSamples(std::vector<double>& samples, const double frequency, const double seconds, const int samples_per_second) const;
 private:
 };

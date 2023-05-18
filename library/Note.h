@@ -8,6 +8,7 @@ const double WHOLE_NOTE = 1.00;
 
 class Note {
 public:
+  Note();
   Note(const std::string& name, const double& duration);
   const std::string& getName() const;
   const double& getDuration() const;

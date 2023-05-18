@@ -20,6 +20,10 @@ static const std::map<std::string, double> g_frequencies =
    { "B4", 493.883 },
   };
 
+Note::Note() 
+  : mName(""), mDuration(0.0) {
+}
+
 Note::Note(const std::string& name, const double& duration) 
   : mName(name), mDuration(duration) {
 }
