@@ -7,8 +7,11 @@ Capabilities
     - Visualize a song
     - Store song in file
     - Read song file format to store notes/instruments/etc into a song description object.
-    - Generate digital audio to approximate the sounds from the song.
-    - Save the sounds to a file.
+    - Generate digital audio to approximate the sounds from the song. (half-check)
+    - Mixer(s)
+    - Wave tables
+    - Save the sounds to a file. (check)
+    - Alternate file formats.
 
 
 Create Instruments
@@ -71,6 +74,18 @@ Assumptions/Questions:
 
 Maybe use envelopes to control frequencies???
 
+Mixer(s)
+--------
+
+Mix multiple staff output into stream.
+Mix multiple notes from one instrument into stream.
+Mix left/right stereo.
+
+
+Wave tables
+-----------
+
+Use wave tables instead of infinite repeating functions.
     
 Saving Audio to Files
 ----------------------
@@ -79,4 +94,9 @@ Initially use the WAV file format with PCM audio.
 Be able to use many of the header configurable features, such as sample bit size,
 number of channels, etc.
 
+
+Alternate file formats
+----------------------
+
+Use 3rd party libraries to read/write other audio file formats.
 
