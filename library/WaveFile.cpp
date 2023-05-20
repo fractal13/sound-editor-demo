@@ -4,7 +4,9 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <sstream>
 #include <exception>
+#include <stdexcept>
 #include <vector>
 
 
@@ -34,7 +36,9 @@ WaveFile::WaveFile(const std::string& filename, int samples_per_second, int bits
     /* all allowed */
     break;
   default:
-    throw std::exception();
+    std::stringstream ss;
+    ss << "bits per sample must be a multiple of 8.";
+    throw std::invalid_argument(ss.str());
     break;
   }
 }
@@ -100,11 +104,15 @@ void WaveFile::writeNotes(const std::vector<Note>& notes) {
 void WaveFile::writeValues(const std::vector<std::vector<double>>& values) {
   if(values.size() != 2) {
     // hack stereo for now, still need a mixer
-    throw std::exception();
+    std::stringstream ss;
+    ss << "Only support exactly 2 staves for now.";
+    throw std::invalid_argument(ss.str());
   }
   if(values[0].size() != values[1].size()) {
     // hack same same
-    throw std::exception();
+    std::stringstream ss;
+    ss << "Both streams must have same number of values.";
+    throw std::invalid_argument(ss.str());
   }
   unsigned int n;
   for(n = 0; n < values[0].size(); n++) {

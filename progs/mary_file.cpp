@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <exception>
+#include <stdexcept>
 
 void parse_note(const std::string& word, Note& note) {
   // qE4, w.Bb2, etc
@@ -87,7 +88,9 @@ void read_score(std::istream& is, MusicalScore& score) {
       MusicalStaff& staff = score.getStaff(staff_index);
       read_staff(is, staff);
     } else {
-      throw std::exception();
+      std::stringstream ss;
+      ss << "Expected a keyword, but got: '" << word << "'.";
+      throw std::invalid_argument(ss.str());
     }
   }
 }
@@ -99,10 +102,13 @@ int main(int argc, char **argv) {
     std::stringstream arg(argv[1]);
     arg >> bits_per_sample;
   }
+  std::string filename = "../doc/mary-had-a-little-lamb.score";
+  if(argc > 2) {
+    std::stringstream arg(argv[2]);
+    arg >> filename;
+  }
 
   MusicalScore score;
-
-  std::string filename = "../doc/mary-had-a-little-lamb.score";
   std::ifstream f(filename);
   read_score(f, score);
   f.close();

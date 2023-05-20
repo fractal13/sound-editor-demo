@@ -24,7 +24,7 @@ mary_file: mary_file.o $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 mary_file.wav: mary_file ../doc/mary-had-a-little-lamb.score
-	./mary_file
+	./mary_file 16 ../doc/mary-had-a-little-lamb.score
 
 play: mary_file.wav
 	play mary_file.wav

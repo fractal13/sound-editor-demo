@@ -2,6 +2,8 @@
 #include "Envelope.h"
 #include <exception>
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
 
 MusicalScore::MusicalScore()
   : mTimeSignature(), mTempo(100.0), mStaves() {
@@ -10,7 +12,9 @@ MusicalScore::MusicalScore()
 MusicalScore::MusicalScore(const TimeSignature& time_signature, const double tempo)
   : mTimeSignature(time_signature), mTempo(tempo), mStaves() {
   if(mTempo < 0.0) {
-    throw std::exception();
+    std::stringstream ss;
+    ss << "Tempo must be non-negative.";
+    throw std::invalid_argument(ss.str());
   }
 }
 
@@ -95,7 +99,9 @@ void MusicalScore::renderStaff(const unsigned int index, const int samples_per_s
     unsigned int N = samples_per_second * seconds; // number of samples in note
     for (unsigned int n = 0; n < N; n++) {
       if(note_start + n >= values.size()) {
-        throw std::exception();
+        std::stringstream ss;
+        ss << "Sample position is beyond the end of the space.";
+        throw std::invalid_argument(ss.str());
       } else {
         values[note_start + n] = amplitudes[n] * samples[n];
       }

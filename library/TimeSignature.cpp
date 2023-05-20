@@ -1,5 +1,7 @@
 #include "TimeSignature.h"
+#include <sstream>
 #include <exception>
+#include <stdexcept>
 
 TimeSignature::TimeSignature()
   : mBeatsPerBar(4), mBeatValue(4) {
@@ -8,7 +10,9 @@ TimeSignature::TimeSignature()
 TimeSignature::TimeSignature(const int beats_per_bar, const int beat_value)
   : mBeatsPerBar(beats_per_bar), mBeatValue(beat_value) {
   if((mBeatsPerBar <= 0) || (mBeatValue <= 0)) {
-    throw std::exception();
+    std::stringstream ss;
+    ss << "TimeSignature beats per bar and beat value must be positive.";
+    throw std::invalid_argument(ss.str());
   }
 }
 

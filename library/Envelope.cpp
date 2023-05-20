@@ -1,6 +1,8 @@
 #include "Envelope.h"
 #include <vector>
+#include <sstream>
 #include <exception>
+#include <stdexcept>
 
 Envelope::Envelope(const double max_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds)
   : mMaximumAmplitude(max_amplitude), mAttackSeconds(attack_seconds), mDecaySeconds(decay_seconds), mSustainAmplitude(sustain_amplitude), mReleaseSeconds(release_seconds) {
@@ -8,7 +10,9 @@ Envelope::Envelope(const double max_amplitude, const double attack_seconds, cons
 
 void Envelope::generateAmplitudes(std::vector<double>& amplitudes, const double seconds, const int samples_per_second) const {
   if(seconds < mAttackSeconds + mDecaySeconds + mReleaseSeconds) {
-    throw std::exception();
+    std::stringstream ss;
+    ss << "Envelope size is too small for all stages.";
+    throw std::invalid_argument(ss.str());
   }
   int N = samples_per_second * seconds;  // total number of samples
   amplitudes.resize(N);

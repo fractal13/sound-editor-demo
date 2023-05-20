@@ -1,5 +1,7 @@
 #include "StaffNote.h"
+#include <sstream>
 #include <exception>
+#include <stdexcept>
 
 StaffNote::StaffNote()
   : mNote(), mStart(0.0) {
@@ -8,7 +10,9 @@ StaffNote::StaffNote()
 StaffNote::StaffNote(const Note& note, const double start)
   : mNote(note), mStart(start) {
   if(start < 0.0) {
-    throw std::exception();
+    std::stringstream ss;
+    ss << "StaffNote start must be non-negative.";
+    throw std::invalid_argument(ss.str());
   }
 }
 Note& StaffNote::getNote() {
