@@ -1,3 +1,13 @@
+TODO
+----
+
+    - Envelope lengths change based on tempo? Probably not.  But need to tune them.
+    - Mixer? to deal with simulataneous notes, and balancing.
+    - Score file deal with note amplitude.
+    - more automation.
+    - melody/accompaniment generators.
+
+
 Capabilities
 ------------
 
