@@ -26,7 +26,8 @@ STAFF melody instrument4
 6.50 qE4
 6.75 qD4
 7.00 wC4
-STAFF harmony instrument3
+STAFF-END
+STAFF harmony instrument
 0.00 hC3
 0.50 hG3
 1.00 hC3
@@ -42,3 +43,4 @@ STAFF harmony instrument3
 6.00 hG3
 6.50 hB3
 7.00 wC3
+STAFF-END

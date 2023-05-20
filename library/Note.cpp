@@ -44,3 +44,12 @@ double Note::getFrequency() const {
   }
   return frequency;
 }
+
+void Note::setName(const std::string& name) {
+  mName = name;
+}
+void Note::setDuration(const double duration) {
+  if(duration > 0.0) {
+    mDuration = duration;
+  }
+}
