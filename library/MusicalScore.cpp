@@ -75,10 +75,10 @@ void MusicalScore::renderStaff(const unsigned int index, const int samples_per_s
   values.resize(sample_count, 0.0);
 
   // FIXME
-  double max_amplitude   = 1.00;  // "volume"
-  double attack_seconds  = 0.10;
-  double decay_seconds   = 0.05;
-  double release_seconds = 0.10;
+  double max_amplitude   = 0.50;  // "volume"
+  double attack_seconds  = 0.08;
+  double decay_seconds   = 0.04;
+  double release_seconds = 0.05;
   double sustain_amplitude = max_amplitude * 0.5;
   Envelope envelope(max_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
 
@@ -103,7 +103,7 @@ void MusicalScore::renderStaff(const unsigned int index, const int samples_per_s
         ss << "Sample position is beyond the end of the space.";
         throw std::invalid_argument(ss.str());
       } else {
-        values[note_start + n] = amplitudes[n] * samples[n];
+        values[note_start + n] += amplitudes[n] * samples[n];
       }
     }
   }

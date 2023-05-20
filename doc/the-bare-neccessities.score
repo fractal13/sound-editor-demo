@@ -1,0 +1,69 @@
+SCORE 4 4 160
+STAFF melody instrument4
+0.25 qC4
+0.50 qD4
+0.75 qF4
+
+1.25 hF4
+1.25 hA4
+1.75 qE4
+1.75 qG#4
+
+2.00 qEb4
+2.00 qA4
+2.25 qG4
+2.50 qF4
+2.75 qF4
+
+3.00 qD4
+3.00 qG4
+3.25 qF4
+3.50 qD4
+3.50 qG4
+3.75 qF4
+
+4.00 qD4
+4.00 qG4
+4.25 qF4
+4.50 qD4
+4.75 qC4
+
+5.00 q.F4
+5.25 eC4
+5.50 qF4
+5.75 qA4
+
+6.00 wD4
+6.00 qD5
+6.25 qC5
+6.50 qBb4
+6.75 qA4
+
+7.00 wG4
+7.00 hD4
+7.50 hD#4
+STAFF-END
+
+STAFF harmony instrument4
+1.00 hA3
+1.00 hF3
+1.50 hC3
+
+2.00 wA3
+2.00 wF3
+
+3.00 wF3
+3.00 wBb2
+
+4.00 wAb3
+4.00 wBb2
+
+5.00 wA3
+5.00 wF3
+
+6.00 wC4
+6.00 wF#3
+
+7.00 wB3
+7.00 wF3
+STAFF-END
