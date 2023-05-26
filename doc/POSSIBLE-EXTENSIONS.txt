@@ -1,0 +1,12 @@
+- note triples
+- musical keys per staff to ease notation.  Includes natural symbols, etc.
+- slurs? transition from one note to another.
+- legato and slurs are related.
+- staccato
+- accent
+- dynamics
+- Other articulations? https://en.wikipedia.org/wiki/Articulation_(music)
+- rest notes
+- instruments to simulate real instruments
+- connect with midifile's binasc format to translate into/from MIDI https://github.com/craigsapp/midifile
+

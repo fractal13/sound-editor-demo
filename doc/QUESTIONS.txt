@@ -1,0 +1,7 @@
+- How does instrument volume balance between multiple notes at a time vs one note?
+- When designing/creating a new wave table, how to normalize sound/volume?  For example, the square wave is much louder than the sine wave at the same frequency.
+- Are there documented wave tables for particular sounds/instruments?
+- In ADSR envelopes, are there standard times for each stage for particular sounds/instruments?
+- Should slurs be played with ADS envelope for the first note, S for middle notes, and SR for the last note? https://en.wikipedia.org/wiki/Slur_(music) depends on the instrument type.
+- 
+
