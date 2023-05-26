@@ -47,12 +47,12 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
   
 }
 
-void ADSREnvelope::assignAttackAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const {
+void ADSREnvelope::assignAttackAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0, const double a1) const {
   int i;
   double m, x, b;
   // attack from 0 to full
-  b = 0.0;
-  m = 1.0 / (end - begin);
+  b = a0;
+  m = (a1-a0) / (end - begin);
   for(i = begin; i < end; i++) {
     x = i - begin;
     amplitudes[i] = m*x+b;

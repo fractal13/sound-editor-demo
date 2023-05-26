@@ -1,10 +1,10 @@
-#include "ADSREnvelope.h"
+#include "ADEnvelope.h"
 #include <iostream>
 #include <vector>
 
 int main() {
 
-  ADSREnvelope e(0.1, 0.2, 0.5, 0.3);
+  ADEnvelope e(0.2);
   std::vector<double> amplitudes;
   e.generateAmplitudes(1.0, 100, amplitudes);
   

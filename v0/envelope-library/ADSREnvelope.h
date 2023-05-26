@@ -10,7 +10,7 @@ public:
 virtual ~ADSREnvelope();
   virtual void generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const;
 
-  void assignAttackAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;
+  void assignAttackAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0=0.0, const double a1=1.0) const;
   void assignDecayAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;
   void assignSustainAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;  
   void assignReleaseAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;

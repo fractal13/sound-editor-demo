@@ -10,10 +10,32 @@ COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
 LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a 
 INCLUDE_FILES := $(wildcard ../include/*.h)
 
-all: test_adsr_envelope
+all: test_adsr_envelope test_ad_envelope test_ar_envelope
 
 test_adsr_envelope: test_adsr_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+test_ad_envelope: test_ad_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+test_ar_envelope: test_ar_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+
+adsr-envelope.pdf: test_adsr_envelope show_graph.py
+	./test_adsr_envelope > adsr.csv
+	./show_graph.py -d adsr.csv
+	-rm -f adsr.csv
+
+ad-envelope.pdf: test_ad_envelope show_graph.py
+	./test_ad_envelope > ad.csv
+	./show_graph.py -d ad.csv
+	-rm -f ad.csv
+
+ar-envelope.pdf: test_ar_envelope show_graph.py
+	./test_ar_envelope > ar.csv
+	./show_graph.py -d ar.csv
+	-rm -f ar.csv
 
 
 ######################################

@@ -32,7 +32,7 @@ void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_
   int release_n = N;
 
   // attack from 0 to sustain
-  assignAttackAmplitudes(0, attack_n, amplitudes);
+  assignAttackAmplitudes(0, attack_n, amplitudes, 0.0, mSustainAmplitude);
 
   // sustain
   assignSustainAmplitudes(attack_n, sustain_n, amplitudes);
