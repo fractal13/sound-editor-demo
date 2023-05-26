@@ -1,26 +1,20 @@
 LIBDIR := ../lib
 INCDIR := ../include
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -g
-LDFLAGS :=
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -I $(INCDIR) -g
+LDFLAGS := -L $(LIBDIR) -lenvelope -lwaveform
 SRCS    := $(sort $(wildcard *.cpp))
-MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) | awk -F: '{print $$1;}' | uniq)
+MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) /dev/null | awk -F: '{print $$1;}' | uniq)
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
-INSTALLED_HEADERS := $(patsubst %,$(INCDIR)/%,$(wildcard *.h))
+LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a 
+INCLUDE_FILES := $(wildcard ../include/*.h)
 
-all: libwaveform.a
+all: test_adsr_envelope
 
-$(LIBDIR)/libwaveform.a: libwaveform.a
-	cp $< $@
+test_adsr_envelope: test_adsr_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
-$(INSTALLED_HEADERS): $(INCDIR)/%: %
-	cp $< $@
-
-install: $(LIBDIR)/libwaveform.a $(INSTALLED_HEADERS)
-
-libwaveform.a: $(COMMON_OBJECTS)
-	ar Urus $@ $^
 
 ######################################
 # automatic dependency generation
@@ -41,6 +35,7 @@ $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
 
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(COMMON_SRCS))))
+include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(MAINSRCS))))
 #
 #
 ######################################

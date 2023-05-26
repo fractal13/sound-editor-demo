@@ -1,7 +1,8 @@
 #include "SquareWaveform.h"
 #include <cmath>
 
-SquareWaveform::SquareWaveform() {
+SquareWaveform::SquareWaveform()
+  : Waveform() {
 }
 
 SquareWaveform::~SquareWaveform() {

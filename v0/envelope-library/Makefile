@@ -9,17 +9,17 @@ COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
 INSTALLED_HEADERS := $(patsubst %,$(INCDIR)/%,$(wildcard *.h))
 
-all: libwaveform.a
+all: libenvelope.a
 
-$(LIBDIR)/libwaveform.a: libwaveform.a
+$(LIBDIR)/libenvelope.a: libenvelope.a
 	cp $< $@
 
 $(INSTALLED_HEADERS): $(INCDIR)/%: %
 	cp $< $@
 
-install: $(LIBDIR)/libwaveform.a $(INSTALLED_HEADERS)
+install: $(LIBDIR)/libenvelope.a $(INSTALLED_HEADERS)
 
-libwaveform.a: $(COMMON_OBJECTS)
+libenvelope.a: $(COMMON_OBJECTS)
 	ar Urus $@ $^
 
 ######################################

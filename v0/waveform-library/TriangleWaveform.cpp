@@ -1,7 +1,8 @@
 #include "TriangleWaveform.h"
 #include <cmath>
 
-TriangleWaveform::TriangleWaveform() {
+TriangleWaveform::TriangleWaveform()
+  : Waveform() {
 }
 
 TriangleWaveform::~TriangleWaveform() {

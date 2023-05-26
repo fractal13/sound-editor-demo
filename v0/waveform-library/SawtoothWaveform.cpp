@@ -1,7 +1,8 @@
 #include "SawtoothWaveform.h"
 #include <cmath>
 
-SawtoothWaveform::SawtoothWaveform() {
+SawtoothWaveform::SawtoothWaveform()
+  : Waveform() {
 }
 
 SawtoothWaveform::~SawtoothWaveform() {

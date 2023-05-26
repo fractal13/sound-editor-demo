@@ -1,7 +1,8 @@
 #include "SineWaveform.h"
 #include <cmath>
 
-SineWaveform::SineWaveform() {
+SineWaveform::SineWaveform()
+  : Waveform() {
 }
 
 SineWaveform::~SineWaveform() {
