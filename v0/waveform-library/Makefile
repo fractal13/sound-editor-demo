@@ -6,9 +6,13 @@ MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) | awk -F: '{print $$1;
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
 
-all: libsynth.a
+all: libwaveform.a
 
-libsynth.a: $(COMMON_OBJECTS)
+install: libwaveform.a
+	cp libwaveform.a ../lib/
+	cp *.h ../include/
+
+libwaveform.a: $(COMMON_OBJECTS)
 	ar Urus $@ $^
 
 ######################################
