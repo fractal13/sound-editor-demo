@@ -10,7 +10,9 @@ COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
 LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a 
 INCLUDE_FILES := $(wildcard ../include/*.h)
 
-all: test_adsr_envelope test_ad_envelope test_ar_envelope
+all: \
+	test_adsr_envelope test_ad_envelope test_ar_envelope \
+	test_sine_waveform test_waveform
 
 test_adsr_envelope: test_adsr_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
@@ -36,6 +38,32 @@ ar-envelope.pdf: test_ar_envelope show_graph.py
 	./test_ar_envelope > ar.csv
 	./show_graph.py -d ar.csv
 	-rm -f ar.csv
+
+test_waveform: test_waveform.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+sine-waveform.pdf: test_waveform show_graph.py
+	./test_waveform sine > sine.csv
+	./show_graph.py plot-waveform -d sine.csv
+	-rm -f sine.csv
+
+sawtooth-waveform.pdf: test_waveform show_graph.py
+	./test_waveform sawtooth > sawtooth.csv
+	./show_graph.py plot-waveform -d sawtooth.csv
+	-rm -f sawtooth.csv
+
+square-waveform.pdf: test_waveform show_graph.py
+	./test_waveform square > square.csv
+	./show_graph.py plot-waveform -d square.csv
+	-rm -f square.csv
+
+triangle-waveform.pdf: test_waveform show_graph.py
+	./test_waveform triangle > triangle.csv
+	./show_graph.py plot-waveform -d triangle.csv
+	-rm -f triangle.csv
+
+test-waveform: sine-waveform.pdf sawtooth-waveform.pdf square-waveform.pdf triangle-waveform.pdf
+
 
 
 ######################################

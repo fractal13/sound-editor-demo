@@ -37,10 +37,28 @@ def plot_envelope(my_args, data):
     plt.close(fig)
     return
 
+def plot_waveform(my_args, data):
+    figure_number = 1
+    fig = plt.figure(figure_number, figsize=(6, 4))
+    fig.suptitle( "Waveform" )
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot("sample_number", "amplitude", data=data)
+    ax.set_xlabel("time")
+    ax.set_ylabel("amplitude")
+    ax.locator_params(axis='both', tight=True, nbins=5)
+    fig.tight_layout()
+
+    basename = get_basename(my_args.data_file)
+    figure_name = "{}-waveform.{}".format(basename, "pdf")
+    
+    fig.savefig(figure_name)
+    plt.close(fig)
+    return
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(prog=argv[0], description='Create Data Plots')
     parser.add_argument('action', default='plot-envelope',
-                        choices=["plot-envelope"], 
+                        choices=["plot-envelope", "plot-waveform"], 
                         nargs='?', help="desired action")
     parser.add_argument('--data-file',               '-d', default="",    type=str,   help="csv file of data to display")
 
@@ -62,6 +80,8 @@ def main(argv):
 
         if my_args.action in ("plot-envelope", ):
             plot_envelope(my_args, data)
+        elif my_args.action in ("plot-waveform", ):
+            plot_waveform(my_args, data)
     else:
         print(filename + " doesn't exist, or is not a file.")
     

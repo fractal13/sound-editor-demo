@@ -1,4 +1,6 @@
 test_adsr_envelope
 test_ad_envelope
 test_ar_envelope
+test_waveform
+test_sine_waveform
 *.pdf
