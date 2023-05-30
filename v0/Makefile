@@ -3,6 +3,7 @@ all:
 	make -C library-envelope install
 	make -C library-instrument install
 	make -C library-score install
+	make -C library-audiofiles install
 	make -C test-programs
 
 

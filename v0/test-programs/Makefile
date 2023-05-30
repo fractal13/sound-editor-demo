@@ -2,12 +2,12 @@ LIBDIR := ../lib
 INCDIR := ../include
 CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -I $(INCDIR) -g
-LDFLAGS := -L $(LIBDIR) -lscore -linstrument -lenvelope -lwaveform
+LDFLAGS := -L $(LIBDIR) -lscore -linstrument -lenvelope -lwaveform -laudiofiles
 SRCS    := $(sort $(wildcard *.cpp))
 MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) /dev/null | awk -F: '{print $$1;}' | uniq)
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
-LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a  $(LIBDIR)/libscore.a
+LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a  $(LIBDIR)/libscore.a $(LIBDIR)/libaudiofiles.a
 INCLUDE_FILES := $(wildcard ../include/*.h)
 
 all: \

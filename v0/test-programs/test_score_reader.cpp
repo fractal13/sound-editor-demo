@@ -1,5 +1,5 @@
 #include "MusicalScore.h"
-// #include "WaveFile.h"
+#include "WaveFile.h"
 #include "ScoreReader.h"
 #include <fstream>
 #include <sstream>
@@ -31,13 +31,13 @@ int main(int argc, char **argv) {
     values.push_back(std::vector<double>());
     score.renderStaff(i, samples_per_second, values[i]);
   }
-  /*
+
   WaveFile wave("mary_file.wav", samples_per_second, bits_per_sample);
   wave.writeHeader();
   wave.writeDataSubchunkHeader();
   wave.writeValues(values);
   wave.writeSizes();
   wave.close();
-  */
+
   return 0;
 }
