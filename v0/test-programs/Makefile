@@ -2,18 +2,25 @@ LIBDIR := ../lib
 INCDIR := ../include
 CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -I $(INCDIR) -g
-LDFLAGS := -L $(LIBDIR) -linstrument -lenvelope -lwaveform
+LDFLAGS := -L $(LIBDIR) -lscore -linstrument -lenvelope -lwaveform
 SRCS    := $(sort $(wildcard *.cpp))
 MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) /dev/null | awk -F: '{print $$1;}' | uniq)
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
-LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a 
+LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a  $(LIBDIR)/libscore.a
 INCLUDE_FILES := $(wildcard ../include/*.h)
 
 all: \
 	test_adsr_envelope test_ad_envelope test_ar_envelope \
 	test_sine_waveform test_waveform \
-	test_instrument
+	test_instrument \
+	test_score_reader
+
+test-score: test_score_reader
+	./test_score_reader
+
+test_score_reader: test_score_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 test_instrument: test_instrument.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)

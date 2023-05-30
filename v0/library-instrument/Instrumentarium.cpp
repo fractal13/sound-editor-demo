@@ -27,7 +27,7 @@ Instrument *Instrumentarium::getInstrument(const std::string& name) {
   Instrument *instrument = 0;
   auto item = mInstruments.find(name);
   if(item != mInstruments.end()) {
-    instrument = item->second;
+    instrument = item->second->clone();
   }
   return instrument;
 }

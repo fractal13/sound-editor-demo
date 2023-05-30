@@ -4,4 +4,5 @@ test_ar_envelope
 test_sine_waveform
 test_waveform
 test_instrument
+test_score_reader
 *.pdf

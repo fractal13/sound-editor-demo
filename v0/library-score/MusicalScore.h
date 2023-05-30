@@ -2,6 +2,9 @@
 #define _MUSICALSCORE_H_
 #include "TimeSignature.h"
 #include "MusicalStaff.h"
+#include "Instrumentarium.h"
+#include "Waveforms.h"
+#include "Envelopes.h"
 
 #include <vector>
 
@@ -20,12 +23,19 @@ public:
   const MusicalStaff& getStaff(const unsigned int index) const;
   unsigned int getNumberOfStaves() const;
 
+  Instrumentarium& getInstrumentarium();
+  Waveforms& getWaveforms();
+  Envelopes& getEnvelopes();
+
   void renderStaff(const unsigned int index, const int samples_per_second, std::vector<double>& values) const;
 
 private:
   TimeSignature mTimeSignature;      // 
   double mTempo;                     // Beats per minute
   std::vector<MusicalStaff> mStaves; // One staff per musical instrument
+  Instrumentarium mInstrumentarium;
+  Waveforms mWaveforms;
+  Envelopes mEnvelopes;
 };
 
 #endif /* _MUSICALSCORE_H_ */

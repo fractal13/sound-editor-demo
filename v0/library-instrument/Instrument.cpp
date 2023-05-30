@@ -1,10 +1,10 @@
 #include "Instrument.h"
 
 Instrument::Instrument() 
-  : mWaveform(0), mEnvelope(0) {
+  : mName(""), mWaveform(0), mEnvelope(0) {
 }
-Instrument::Instrument(Waveform *waveform, Envelope *envelope) 
-  : mWaveform(waveform), mEnvelope(envelope) {
+Instrument::Instrument(const std::string& name, Waveform *waveform, Envelope *envelope) 
+  : mName(name), mWaveform(waveform), mEnvelope(envelope) {
 }
 
 Instrument::~Instrument() {
@@ -17,6 +17,7 @@ Instrument::~Instrument() {
     mEnvelope = 0;
   }
 }
+
 Instrument *Instrument::clone() const {
   Waveform *waveform = 0;
   if(mWaveform) {
@@ -27,16 +28,24 @@ Instrument *Instrument::clone() const {
     envelope = mEnvelope->clone();
   }
 
-  auto copy = new Instrument(waveform, envelope);
+  auto copy = new Instrument(mName, waveform, envelope);
   return copy;
 }
 
+
+const std::string& Instrument::getName() const {
+  return mName;
+}
 
 Waveform *Instrument::getWaveform() const {
   return mWaveform;
 }
 Envelope *Instrument::getEnvelope() const {
   return mEnvelope;
+}
+
+void Instrument::setName(const std::string& name) {
+  mName = name;
 }
 
 void Instrument::setWaveform(Waveform *waveform) {

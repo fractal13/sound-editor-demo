@@ -13,6 +13,9 @@ public:
   MusicalStaff(const MusicalStaff& src); // copy constructor
   ~MusicalStaff();
 
+  const std::string& getName() const;
+  void setName(const std::string& name);
+
   Instrument& getInstrument();
   const Instrument& getInstrument() const;
   void setInstrument(Instrument *instrument);
@@ -25,6 +28,7 @@ public:
   void render(const TimeSignature& time_signature, const double tempo, const int samples_per_second, std::vector<double>& values) const;
 
 private:
+  std::string             mName;
   Instrument             *mInstrument; // instrument to perform these notes
   std::vector<StaffNote>  mNotes;      // the notes to perform
 };

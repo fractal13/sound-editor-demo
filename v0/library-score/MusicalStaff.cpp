@@ -26,6 +26,14 @@ MusicalStaff::~MusicalStaff() {
   }
 }
 
+const std::string& MusicalStaff::getName() const {
+  return mName;
+}
+
+void MusicalStaff::setName(const std::string& name) {
+  mName = name;
+}
+
 Instrument& MusicalStaff::getInstrument() {
   return *mInstrument;
 }

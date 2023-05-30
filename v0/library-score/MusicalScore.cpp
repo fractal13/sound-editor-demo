@@ -65,6 +65,18 @@ unsigned int MusicalScore::getNumberOfStaves() const {
   return mStaves.size();
 }
 
+Instrumentarium& MusicalScore::getInstrumentarium() {
+  return mInstrumentarium;
+}
+
+Waveforms& MusicalScore::getWaveforms() {
+  return mWaveforms;
+}
+
+Envelopes& MusicalScore::getEnvelopes() {
+  return mEnvelopes;
+}
+
 void MusicalScore::renderStaff(const unsigned int index, const int samples_per_second, std::vector<double>& values) const {
   const MusicalStaff& staff = getStaff(index);
   staff.render(mTimeSignature, mTempo, samples_per_second, values);
