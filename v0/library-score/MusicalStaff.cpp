@@ -1,5 +1,8 @@
 #include "MusicalStaff.h"
+#include "TimeSignature.h"
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
 
 MusicalStaff::MusicalStaff()
   : mInstrument(0), mNotes() {
@@ -56,4 +59,37 @@ double MusicalStaff::getDurationInWholeNotes() const {
     }
   }
   return duration;
+}
+
+void MusicalStaff::render(const TimeSignature& time_signature, const double tempo, const int samples_per_second, std::vector<double>& values) const {
+  double duration     = getDurationInWholeNotes();
+  double beat_count   = duration * time_signature.getBeatValue();
+  double second_count = beat_count * 60.0 / tempo;
+  unsigned int sample_count = second_count * samples_per_second;
+  // double resize to insure that all values are filled with 0.0
+  values.resize(0);
+  values.resize(sample_count, 0.0);
+
+  double whole_note_seconds = time_signature.getBeatValue() * 60.0 / tempo;
+  
+  for(auto& note : mNotes) {
+    double start = note.getStart();
+    double frequency = note.getNote().getFrequency();
+    double seconds = note.getNote().getDuration() * whole_note_seconds;
+    std::vector<double> samples;
+    mInstrument->generateSamples(frequency, seconds, samples_per_second, samples);
+
+    unsigned int note_start = samples_per_second * start * whole_note_seconds;
+    unsigned int N = samples_per_second * seconds; // number of samples in note
+    for (unsigned int n = 0; n < N; n++) {
+      if(note_start + n >= values.size()) {
+        std::stringstream ss;
+        ss << "Sample position is beyond the end of the space.";
+        throw std::invalid_argument(ss.str());
+      } else {
+        values[note_start + n] += samples[n];
+      }
+    }
+  }
+
 }
