@@ -14,6 +14,7 @@ virtual ~ADSREnvelope();
   void assignDecayAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;
   void assignSustainAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;  
   void assignReleaseAmplitudes(const int begin, const int end, std::vector<double>& amplitudes) const;
+  virtual ADSREnvelope* clone() const;
 
 protected:
   // Attack, Decay, Sustain, Release

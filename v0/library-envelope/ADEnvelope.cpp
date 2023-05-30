@@ -35,3 +35,9 @@ void ADEnvelope::generateAmplitudes(const double seconds, const int samples_per_
   // decay from full to sustain
   assignDecayAmplitudes(attack_n, decay_n, amplitudes);
 }
+
+ADEnvelope* ADEnvelope::clone() const {
+  auto copy = new ADEnvelope;
+  *copy = *this;
+  return copy;
+}

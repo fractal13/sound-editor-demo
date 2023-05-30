@@ -9,6 +9,7 @@ public:
   ADEnvelope(const double attack_seconds);
   virtual ~ADEnvelope();
   virtual void generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const;
+  virtual ADEnvelope* clone() const;
 protected:
 private:
 };

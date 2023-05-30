@@ -40,3 +40,9 @@ void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_
   // decay from sustain to 0.0 (release)
   assignReleaseAmplitudes(sustain_n, release_n, amplitudes);
 }
+
+AREnvelope* AREnvelope::clone() const {
+  auto copy = new AREnvelope;
+  *copy = *this;
+  return copy;
+}

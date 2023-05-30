@@ -96,3 +96,9 @@ void ADSREnvelope::assignReleaseAmplitudes(const int begin, const int end, std::
   }
   
 }
+
+ADSREnvelope* ADSREnvelope::clone() const {
+  auto copy = new ADSREnvelope;
+  *copy = *this;
+  return copy;
+}
