@@ -2,17 +2,21 @@ LIBDIR := ../lib
 INCDIR := ../include
 CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -I $(INCDIR) -g
-LDFLAGS := -L $(LIBDIR) -lenvelope -lwaveform
+LDFLAGS := -L $(LIBDIR) -linstrument -lenvelope -lwaveform
 SRCS    := $(sort $(wildcard *.cpp))
 MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) /dev/null | awk -F: '{print $$1;}' | uniq)
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
-LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a 
+LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a 
 INCLUDE_FILES := $(wildcard ../include/*.h)
 
 all: \
 	test_adsr_envelope test_ad_envelope test_ar_envelope \
-	test_sine_waveform test_waveform
+	test_sine_waveform test_waveform \
+	test_instrument
+
+test_instrument: test_instrument.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 test_adsr_envelope: test_adsr_envelope.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
@@ -63,6 +67,28 @@ triangle-waveform.pdf: test_waveform show_graph.py
 	-rm -f triangle.csv
 
 test-waveform: sine-waveform.pdf sawtooth-waveform.pdf square-waveform.pdf triangle-waveform.pdf
+
+sine-adsr-instrument.pdf: test_instrument show_graph.py
+	./test_instrument > sine-adsr.csv
+	./show_graph.py plot-instrument -d sine-adsr.csv
+	-rm -f sine-adsr.csv
+
+square-adsr-instrument.pdf: test_instrument show_graph.py
+	./test_instrument square ADSR > square-adsr.csv
+	./show_graph.py plot-instrument -d square-adsr.csv
+	-rm -f square-adsr.csv
+
+sawtooth-ad-instrument.pdf: test_instrument show_graph.py
+	./test_instrument sawtooth AD > sawtooth-ad.csv
+	./show_graph.py plot-instrument -d sawtooth-ad.csv
+	-rm -f sawtooth-ad.csv
+
+triangle-ar-instrument.pdf: test_instrument show_graph.py
+	./test_instrument triangle AR > triangle-ar.csv
+	./show_graph.py plot-instrument -d triangle-ar.csv
+	-rm -f triangle-ar.csv
+
+test-instrument: sine-adsr-instrument.pdf square-adsr-instrument.pdf sawtooth-ad-instrument.pdf triangle-ar-instrument.pdf
 
 
 
