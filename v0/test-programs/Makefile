@@ -18,6 +18,7 @@ all: \
 
 test-score: test_score_reader
 	./test_score_reader
+	./test_score_reader 16 ../doc/the-bare-neccessities.score the-bare-neccessities.wav
 
 test_score_reader: test_score_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)

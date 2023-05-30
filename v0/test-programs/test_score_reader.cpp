@@ -18,6 +18,11 @@ int main(int argc, char **argv) {
     std::stringstream arg(argv[2]);
     arg >> filename;
   }
+  std::string output_filename = "mary-had-a-little-lamb.wav";
+  if(argc > 3) {
+    std::stringstream arg(argv[3]);
+    arg >> output_filename;
+  }
 
   ScoreReader reader;
   MusicalScore score;
@@ -32,7 +37,7 @@ int main(int argc, char **argv) {
     score.renderStaff(i, samples_per_second, values[i]);
   }
 
-  WaveFile wave("mary_file.wav", samples_per_second, bits_per_sample);
+  WaveFile wave(output_filename, samples_per_second, bits_per_sample);
   wave.writeHeader();
   wave.writeDataSubchunkHeader();
   wave.writeValues(values);
