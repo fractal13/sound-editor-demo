@@ -8,7 +8,7 @@ public:
   AREnvelope();
   AREnvelope(const double maximum_amplitude, const double attack_seconds, const double sustain_amplitude, const double release_seconds);
   virtual ~AREnvelope();
-  virtual void generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const;
+  virtual void generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const;
   virtual AREnvelope* clone() const;
 protected:
 private:

@@ -5,6 +5,7 @@
 #include "Instrumentarium.h"
 #include "Waveforms.h"
 #include "Envelopes.h"
+#include "AudioTrack.h"
 
 #include <vector>
 
@@ -27,7 +28,7 @@ public:
   Waveforms& getWaveforms();
   Envelopes& getEnvelopes();
 
-  void renderStaff(const unsigned int index, const int samples_per_second, std::vector<double>& values) const;
+  void renderStaff(const unsigned int index, const int samples_per_second, AudioTrack& track) const;
 
 private:
   TimeSignature mTimeSignature;      // 

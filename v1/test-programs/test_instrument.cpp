@@ -1,4 +1,5 @@
 #include "EasyInstrument.h"
+#include "AudioTrack.h"
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -19,18 +20,17 @@ int main(int argc, char *argv[]) {
 
   Instrument *instrument = new EasyInstrument(waveform, envelope);
 
-  
-  std::vector<double> samples;
+  AudioTrack track;
   double frequency = 440.00;
   double seconds = 0.10;
   int samples_per_second = 44100;
 
-  instrument->generateSamples(frequency, seconds, samples_per_second, samples);
+  instrument->generateSamples(frequency, seconds, samples_per_second, track);
   
   unsigned int i;
   std::cout << "sample_number" << "," << "amplitude" << std::endl;
-  for(i = 0; i < samples.size(); i++) {
-    std::cout << i << "," << samples[i] << std::endl;
+  for(i = 0; i < track.size(); i++) {
+    std::cout << i << "," << track[i] << std::endl;
   }
 
   delete instrument;

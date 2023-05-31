@@ -1,5 +1,7 @@
 test_envelope
 test_waveform
 test_instrument
+test_staff_render
 test_score_reader
 *.pdf
+*.wav

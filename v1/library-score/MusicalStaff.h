@@ -4,6 +4,7 @@
 #include "Instrument.h"
 #include "StaffNote.h"
 #include "TimeSignature.h"
+#include "AudioTrack.h"
 #include <vector>
 
 class MusicalStaff {
@@ -25,7 +26,7 @@ public:
 
   double getDurationInWholeNotes() const;
 
-  void render(const TimeSignature& time_signature, const double tempo, const int samples_per_second, std::vector<double>& values) const;
+  void render(const TimeSignature& time_signature, const double tempo, const int samples_per_second, AudioTrack& track) const;
 
 private:
   std::string             mName;

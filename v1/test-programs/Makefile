@@ -13,13 +13,17 @@ TARGETS := \
 	test_envelope \
 	test_waveform \
 	test_instrument \
+	test_staff_render \
 	test_score_reader
 
 all: $(TARGETS)
 
-test-all: test-waveform test-envelope test-instrument test-score
+test-all: test-waveform test-envelope test-instrument test-render test-score
 
 test_score_reader: test_score_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+test_staff_render: test_staff_render.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 test_instrument: test_instrument.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
@@ -58,7 +62,15 @@ test-instrument: sine-ADSR-instrument.pdf square-ADSR-instrument.pdf sawtooth-AD
 	-rm -f $*.csv
 
 #
-test-score: mary-had-a-little-lamb.wav the-bare-neccessities.wav
+test-render: scale-render.pdf
+
+%-render.pdf: test_staff_render ../doc/%.score
+	./test_staff_render 16 ../doc/$*.score > $*.csv
+	./show_graph.py plot-render -d $*.csv
+	-rm -f $*.csv
+
+#
+test-score: mary-had-a-little-lamb.wav the-bare-neccessities.wav notes.wav
 
 %.wav: test_score_reader ../doc/%.score
 	./test_score_reader 16 ../doc/$*.score $@

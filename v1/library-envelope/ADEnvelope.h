@@ -8,7 +8,7 @@ public:
   ADEnvelope();
   ADEnvelope(const double maximum_amplitude, const double attack_seconds);
   virtual ~ADEnvelope();
-  virtual void generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const;
+  virtual void generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const;
   virtual ADEnvelope* clone() const;
 protected:
 private:

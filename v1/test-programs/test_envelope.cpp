@@ -1,6 +1,8 @@
 #include "ADEnvelope.h"
 #include "AREnvelope.h"
 #include "ADSREnvelope.h"
+#include "AudioTrack.h"
+
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -24,13 +26,13 @@ int main(int argc, char *argv[]) {
       throw std::invalid_argument(ss.str());
     }
   }
-  std::vector<double> amplitudes;
-  e->generateAmplitudes(1.0, 100, amplitudes);
+  AudioTrack track;
+  e->generateAmplitudes(1.0, 100, track);
 
   unsigned int i;
   std::cout << "sample_number" << "," << "amplitude" << std::endl;
-  for(i = 0; i < amplitudes.size(); i++) {
-    std::cout << i << "," << amplitudes[i] << std::endl;
+  for(i = 0; i < track.size(); i++) {
+    std::cout << i << "," << track[i] << std::endl;
   }
 
   delete e;

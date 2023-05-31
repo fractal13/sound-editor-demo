@@ -13,7 +13,7 @@ ADSREnvelope::ADSREnvelope(const double maximum_amplitude, const double attack_s
 ADSREnvelope::~ADSREnvelope() {
 }
 
-void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const {
+void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const {
 
   if(seconds < mAttackSeconds + mDecaySeconds + mReleaseSeconds) {
     std::stringstream ss;
@@ -24,30 +24,28 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
     ss << "release seconds: " << mReleaseSeconds << std::endl;
     throw std::invalid_argument(ss.str());
   }
-  int N = samples_per_second * seconds;  // total number of samples
-  amplitudes.resize(N);
+  track.setSize(samples_per_second, seconds);
 
   // indices of last sample in envelope region
   int attack_n  = samples_per_second * mAttackSeconds;
   int decay_n   = attack_n + samples_per_second * mDecaySeconds;
-  int sustain_n = N - samples_per_second * mReleaseSeconds;
-  int release_n = N;
+  int release_n = track.getSampleCount();
+  int sustain_n = release_n - samples_per_second * mReleaseSeconds;
 
   // attack from 0 to full
-  assignAttackAmplitudes(0, attack_n, amplitudes, 0.0, mMaximumAmplitude);
+  assignAttackAmplitudes(0, attack_n, track, 0.0, mMaximumAmplitude);
 
   // decay from full to sustain
-  assignDecayAmplitudes(attack_n, decay_n, amplitudes, mMaximumAmplitude, mSustainAmplitude);
+  assignDecayAmplitudes(attack_n, decay_n, track, mMaximumAmplitude, mSustainAmplitude);
   
   // sustain
-  assignSustainAmplitudes(decay_n, sustain_n, amplitudes, mSustainAmplitude);
+  assignSustainAmplitudes(decay_n, sustain_n, track, mSustainAmplitude);
   
   // decay from sustain to 0.0 (release)
-  assignReleaseAmplitudes(sustain_n, release_n, amplitudes, mSustainAmplitude, 0.0);
-  
+  assignReleaseAmplitudes(sustain_n, release_n, track, mSustainAmplitude, 0.0);
 }
 
-void ADSREnvelope::assignAttackAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0, const double a1) const {
+void ADSREnvelope::assignAttackAmplitudes(const int begin, const int end, AudioTrack& track, const double a0, const double a1) const {
   int i;
   double m, x, b;
   // attack from 0 to full
@@ -55,11 +53,11 @@ void ADSREnvelope::assignAttackAmplitudes(const int begin, const int end, std::v
   m = (a1-a0) / (end - begin);
   for(i = begin; i < end; i++) {
     x = i - begin;
-    amplitudes[i] = m*x+b;
+    track[i] = m*x+b;
   }
 }
 
-void ADSREnvelope::assignDecayAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0, const double a1) const {
+void ADSREnvelope::assignDecayAmplitudes(const int begin, const int end, AudioTrack& track, const double a0, const double a1) const {
   int i;
   double m, x, b;
   // decay from full to sustain
@@ -67,11 +65,11 @@ void ADSREnvelope::assignDecayAmplitudes(const int begin, const int end, std::ve
   m = (a1 - a0) / (end - begin);
   for(i = begin; i < end; i++) {
     x = i - begin;
-    amplitudes[i] = m*x+b;
+    track[i] = m*x+b;
   }
 }
 
-void ADSREnvelope::assignSustainAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0) const {
+void ADSREnvelope::assignSustainAmplitudes(const int begin, const int end, AudioTrack& track, const double a0) const {
   int i;
   double m, x, b;
   // sustain
@@ -79,11 +77,11 @@ void ADSREnvelope::assignSustainAmplitudes(const int begin, const int end, std::
   m = 0;
   for(i = begin; i < end; i++) {
     x = i - begin;
-    amplitudes[i] = m*x+b;
+    track[i] = m*x+b;
   }
 }
 
-void ADSREnvelope::assignReleaseAmplitudes(const int begin, const int end, std::vector<double>& amplitudes, const double a0, const double a1) const {
+void ADSREnvelope::assignReleaseAmplitudes(const int begin, const int end, AudioTrack& track, const double a0, const double a1) const {
   int i;
   double m, x, b;
 
@@ -92,7 +90,7 @@ void ADSREnvelope::assignReleaseAmplitudes(const int begin, const int end, std::
   m = (a1 - a0) / (end - begin);
   for(i = begin; i < end; i++) {
     x = i - begin;
-    amplitudes[i] = m*x+b;
+    track[i] = m*x+b;
   }
   
 }

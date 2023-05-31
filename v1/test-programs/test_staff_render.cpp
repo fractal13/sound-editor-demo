@@ -38,12 +38,11 @@ int main(int argc, char **argv) {
     score.renderStaff(i, samples_per_second, tracks[i]);
   }
 
-  WaveFile wave(output_filename, samples_per_second, bits_per_sample);
-  wave.writeHeader();
-  wave.writeDataSubchunkHeader();
-  wave.writeTracks(tracks);
-  wave.writeSizes();
-  wave.close();
+  unsigned int j;
+  std::cout << "sample_number" << "," << "amplitude" << std::endl;
+  for(j = 0; j < tracks[0].size(); j++) {
+    std::cout << j << "," << tracks[0][j] << std::endl;
+  }
 
   return 0;
 }

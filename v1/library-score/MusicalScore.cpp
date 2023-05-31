@@ -77,7 +77,7 @@ Envelopes& MusicalScore::getEnvelopes() {
   return mEnvelopes;
 }
 
-void MusicalScore::renderStaff(const unsigned int index, const int samples_per_second, std::vector<double>& values) const {
+void MusicalScore::renderStaff(const unsigned int index, const int samples_per_second, AudioTrack& track) const {
   const MusicalStaff& staff = getStaff(index);
-  staff.render(mTimeSignature, mTempo, samples_per_second, values);
+  staff.render(mTimeSignature, mTempo, samples_per_second, track);
 }

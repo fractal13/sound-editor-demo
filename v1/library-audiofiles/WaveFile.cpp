@@ -70,56 +70,23 @@ void WaveFile::writeDataSubchunkHeader() {
   mFile << "data----";  // (chunk size to be filled in later)                        (subchunk2 ID/subchunk2 size)
 }
 
-/*
-void WaveFile::writeNotes(const std::vector<Note>& notes) {
-  double max_amplitude = mMaximumAmplitude;  // "volume"
-  double attack_seconds  = 0.10;
-  double decay_seconds   = 0.05;
-  double release_seconds = 0.10;
-  double sustain_amplitude = max_amplitude * 0.5;
-  Instrument4 instrument;
-  Envelope envelope(max_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
-  //double whole_note_seconds = 4.0*60.0/80.0; // q=80
-  double whole_note_seconds = 4.0*60.0/120.0; // q=120
-  for(auto& note: notes) {
-    double frequency = note.getFrequency();
-    double seconds = note.getDuration() * whole_note_seconds;
-
-    std::vector<double> amplitudes;
-    envelope.generateAmplitudes(amplitudes, seconds, mSamplesPerSecond);
-    std::vector<double> samples;
-    instrument.generateSamples(samples, frequency, seconds, mSamplesPerSecond);
-
-    int N = mSamplesPerSecond * seconds;  // total number of samples
-    for (int n = 0; n < N; n++) {
-      double value1 = samples[n];
-      double value2 = value1;
-      // left channel
-      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value1), mBytesPerSample);
-      // right channel
-      little_endian_io::write_word(mFile, (int)(amplitudes[n] * value2), mBytesPerSample);
-    }
-  }
-}
-*/
-
-void WaveFile::writeValues(const std::vector<std::vector<double>>& values) {
-  if(values.size() != 2) {
+void WaveFile::writeTracks(const std::vector<AudioTrack>& tracks) {
+  if(tracks.size() != 2) {
     // hack stereo for now, still need a mixer
     std::stringstream ss;
     ss << "Only support exactly 2 staves for now.";
     throw std::invalid_argument(ss.str());
   }
-  if(values[0].size() != values[1].size()) {
+  if(tracks[0].size() != tracks[1].size()) {
     // hack same same
     std::stringstream ss;
     ss << "Both streams must have same number of values.";
     throw std::invalid_argument(ss.str());
   }
   unsigned int n;
-  for(n = 0; n < values[0].size(); n++) {
-    little_endian_io::write_word(mFile, (int)(values[0][n] * mMaximumAmplitude), mBytesPerSample);
-    little_endian_io::write_word(mFile, (int)(values[1][n] * mMaximumAmplitude), mBytesPerSample);
+  for(n = 0; n < tracks[0].size(); n++) {
+    little_endian_io::write_word(mFile, (int)(tracks[0][n] * mMaximumAmplitude), mBytesPerSample);
+    little_endian_io::write_word(mFile, (int)(tracks[1][n] * mMaximumAmplitude), mBytesPerSample);
   }
 }
 

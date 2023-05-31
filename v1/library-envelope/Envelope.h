@@ -1,5 +1,8 @@
 #ifndef _ENVELOPE_H_
 #define _ENVELOPE_H_
+
+#include "AudioTrack.h"
+
 #include <vector>
 
 class Envelope {
@@ -7,7 +10,7 @@ public:
   Envelope();
   Envelope(const double amplitude);
   virtual ~Envelope();
-  virtual void generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const = 0;
+  virtual void generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const = 0;
   virtual Envelope* clone() const = 0;
 
   double getMaximumAmplitude() const;

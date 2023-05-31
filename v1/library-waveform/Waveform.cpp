@@ -18,15 +18,11 @@ double Waveform::computeSampleCyclePosition(const double frequency, const double
   return cycle_position;
 }
 
-void Waveform::generateSamples(const double frequency, const double seconds, const int samples_per_second, std::vector<double>& samples) const {
-
-  int N = samples_per_second * seconds;  // total number of samples
-  samples.resize(N);
-  for (int n = 0; n < N; n++) {
-    double value = generateOneSample(frequency, n, samples_per_second);
-    samples[n] = value;
+void Waveform::generateSamples(const double frequency, const double seconds, const int samples_per_second, AudioTrack& track) const {
+  track.setSize(samples_per_second, seconds);
+  for (int n = 0; n < track.getSampleCount(); n++) {
+    track[n] = generateOneSample(frequency, n, samples_per_second);
   }
-
 }
 
 

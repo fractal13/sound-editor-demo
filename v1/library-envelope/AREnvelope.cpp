@@ -13,7 +13,7 @@ AREnvelope::AREnvelope(const double maximum_amplitude, const double attack_secon
 AREnvelope::~AREnvelope() {
 }
 
-void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_second, std::vector<double>& amplitudes) const {
+void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const {
 
   if(seconds < mAttackSeconds + mReleaseSeconds) {
     std::stringstream ss;
@@ -23,22 +23,21 @@ void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_
     ss << "release seconds: " << mReleaseSeconds << std::endl;
     throw std::invalid_argument(ss.str());
   }
-  int N = samples_per_second * seconds;  // total number of samples
-  amplitudes.resize(N);
+  track.setSize(samples_per_second, seconds);
 
   // indices of last sample in envelope region
   int attack_n  = samples_per_second * mAttackSeconds;
-  int sustain_n = N - samples_per_second * mReleaseSeconds;
-  int release_n = N;
+  int release_n = track.getSampleCount();
+  int sustain_n = release_n - samples_per_second * mReleaseSeconds;
 
   // attack from 0 to sustain
-  assignAttackAmplitudes(0, attack_n, amplitudes, 0.0, mSustainAmplitude);
+  assignAttackAmplitudes(0, attack_n, track, 0.0, mSustainAmplitude);
 
   // sustain
-  assignSustainAmplitudes(attack_n, sustain_n, amplitudes, mSustainAmplitude);
+  assignSustainAmplitudes(attack_n, sustain_n, track, mSustainAmplitude);
 
   // decay from sustain to 0.0 (release)
-  assignReleaseAmplitudes(sustain_n, release_n, amplitudes, mSustainAmplitude, 0.0);
+  assignReleaseAmplitudes(sustain_n, release_n, track, mSustainAmplitude, 0.0);
 }
 
 AREnvelope* AREnvelope::clone() const {

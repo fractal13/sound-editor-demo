@@ -64,16 +64,11 @@ void Instrument::setEnvelope(Envelope *envelope) {
   mEnvelope = envelope;
 }
 
-void Instrument::generateSamples(const double frequency, const double seconds, const int samples_per_second, std::vector<double>& samples) const {
-  std::vector<double> amplitudes;
-  mEnvelope->generateAmplitudes(seconds, samples_per_second, amplitudes);
-  std::vector<double> raw_samples;
-  mWaveform->generateSamples(frequency, seconds, samples_per_second, raw_samples);
-  // FIXME: With a pair of classes, can use operator overloading here.
-  unsigned int N = samples_per_second * seconds; // number of samples in note
-  samples.resize(N);
-  unsigned int n;
-  for(n = 0; n < N; n++) {
-    samples[n] = amplitudes[n] * raw_samples[n];
-  }
+void Instrument::generateSamples(const double frequency, const double seconds, const int samples_per_second, AudioTrack& track) const {
+  AudioTrack envelope;
+  AudioTrack waveform;
+  mEnvelope->generateAmplitudes(seconds, samples_per_second, envelope);
+  mWaveform->generateSamples(frequency, seconds, samples_per_second, waveform);
+  
+  track = envelope * waveform;
 }

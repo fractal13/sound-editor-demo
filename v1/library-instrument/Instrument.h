@@ -3,6 +3,7 @@
 
 #include "Waveform.h"
 #include "Envelope.h"
+#include "AudioTrack.h"
 #include <vector>
 #include <string>
 
@@ -21,7 +22,7 @@ public:
   void setWaveform(Waveform *waveform);
   void setEnvelope(Envelope *envelope);
 
-  void generateSamples(const double frequency, const double seconds, const int samples_per_second, std::vector<double>& samples) const;
+  void generateSamples(const double frequency, const double seconds, const int samples_per_second, AudioTrack& track) const;
   
 protected:
   std::string mName;

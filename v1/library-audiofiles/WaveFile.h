@@ -1,6 +1,6 @@
 #ifndef _WAVEFILE_H_
 #define _WAVEFILE_H_
-#include "Note.h"
+#include "AudioTrack.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -13,10 +13,7 @@ public:
 
   void writeHeader();
   void writeDataSubchunkHeader();
-  /*
-  void writeNotes(const std::vector<Note>& notes);
-  */
-  void writeValues(const std::vector<std::vector<double>>& values);
+  void writeTracks(const std::vector<AudioTrack>& tracks);
   void writeSizes();
   void close();
 
