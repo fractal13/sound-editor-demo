@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <stdexcept>
 
 int main(int argc, char *argv[]) {
   Waveform *f = 0;
@@ -20,6 +21,10 @@ int main(int argc, char *argv[]) {
       f = new SquareWaveform();
     } else if(waveform == "triangle") {
       f = new TriangleWaveform();
+    } else {
+      std::stringstream ss;
+      ss << "Unknown waveform name: '" << waveform << "'.";
+      throw std::invalid_argument(ss.str());
     }
   }
   std::vector<double> samples;

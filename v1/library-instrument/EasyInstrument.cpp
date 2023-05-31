@@ -46,11 +46,11 @@ void EasyInstrument::setWaveform(const std::string& waveform) {
 void EasyInstrument::setEnvelope(const std::string& envelope) {
   Envelope *e = 0;
   if(envelope == "ADSR") {
-    e = new ADSREnvelope(0.01, 0.01, 0.5, 0.02);
+    e = new ADSREnvelope(1.00, 0.01, 0.01, 0.5, 0.02);
   } else if(envelope == "AD") {
-    e = new ADEnvelope(0.01);
+    e = new ADEnvelope(1.00, 0.01);
   } else if(envelope == "AR") {
-    e = new AREnvelope(0.01, 0.75, 0.02);
+    e = new AREnvelope(1.00, 0.01, 0.75, 0.02);
   } else {
     std::stringstream ss;
     ss << "Invalid envelope name '" << envelope << "'";

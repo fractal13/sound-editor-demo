@@ -70,6 +70,7 @@ double MusicalStaff::getDurationInWholeNotes() const {
 }
 
 void MusicalStaff::render(const TimeSignature& time_signature, const double tempo, const int samples_per_second, std::vector<double>& values) const {
+  double scale        = 1.00;
   double duration     = getDurationInWholeNotes();
   double beat_count   = duration * time_signature.getBeatValue();
   double second_count = beat_count * 60.0 / tempo;
@@ -95,7 +96,7 @@ void MusicalStaff::render(const TimeSignature& time_signature, const double temp
         ss << "Sample position is beyond the end of the space.";
         throw std::invalid_argument(ss.str());
       } else {
-        values[note_start + n] += samples[n];
+        values[note_start + n] += scale * samples[n];
       }
     }
   }

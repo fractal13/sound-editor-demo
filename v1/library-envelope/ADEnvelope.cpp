@@ -3,11 +3,11 @@
 #include <stdexcept>
 
 ADEnvelope::ADEnvelope()
-  : ADSREnvelope(0.0, 0.0, 0.0, 0.0) {
+  : ADSREnvelope(1.0, 0.0, 0.0, 0.0, 0.0) {
 }
 
-ADEnvelope::ADEnvelope(const double attack_seconds)
-  : ADSREnvelope(attack_seconds, 0.0, 0.0, 0.0) {
+ADEnvelope::ADEnvelope(const double maximum_amplitude, const double attack_seconds)
+  : ADSREnvelope(maximum_amplitude, attack_seconds, 0.0, 0.0, 0.0) {
 }
 
 ADEnvelope::~ADEnvelope() {
@@ -30,10 +30,10 @@ void ADEnvelope::generateAmplitudes(const double seconds, const int samples_per_
   int decay_n   = N;
 
   // attack from 0 to full
-  assignAttackAmplitudes(0, attack_n, amplitudes);
+  assignAttackAmplitudes(0, attack_n, amplitudes, 0.0, mMaximumAmplitude);
 
   // decay from full to sustain
-  assignDecayAmplitudes(attack_n, decay_n, amplitudes);
+  assignDecayAmplitudes(attack_n, decay_n, amplitudes, mMaximumAmplitude, mSustainAmplitude);
 }
 
 ADEnvelope* ADEnvelope::clone() const {

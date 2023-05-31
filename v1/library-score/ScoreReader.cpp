@@ -120,6 +120,7 @@ Instrument* ScoreReader::readInstrument(std::istream& is, MusicalScore& score) c
       WAVEFORM-END
     
       ENVELOPE piano-adsr ADSR
+        MAXIMUM-AMPLITUDE 0.25
         ATTACK-SECONDS 0.01
         DECAY-SECONDS 0.02
         SUSTAIN-AMPLITUDE 0.5
@@ -211,6 +212,7 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
 
   /* // ENVELOPE has already been read
     ENVELOPE piano-adsr ADSR
+      MAXIMUM-AMPLITUDE 0.25
       ATTACK-SECONDS 0.01
       DECAY-SECONDS 0.02
       SUSTAIN-AMPLITUDE 0.5
@@ -234,13 +236,16 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
       ss << "Unknown envelope type: '" << type << "'.";
       throw std::invalid_argument(ss.str());
     }
-    
+
+    double maximum_amplitude = 1.0;
     double attack_seconds = 0.0;
     double decay_seconds = 0.0;
     double sustain_amplitude = 0.0;
     double release_seconds = 0.0;
     while(word != "ENVELOPE-END") {
-      if(word == "ATTACK-SECONDS") {
+      if(word == "MAXIMUM-AMPLITUDE") {
+        is >> maximum_amplitude >> word;
+      } else if(word == "ATTACK-SECONDS") {
         is >> attack_seconds >> word;
       } else if(word == "ATTACK-SECONDS") {
         is >> attack_seconds >> word;
@@ -258,11 +263,11 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
     }
 
     if(type == "ADSR") {
-      envelope = new ADSREnvelope(attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
+      envelope = new ADSREnvelope(maximum_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
     } else if(type == "AD") {
-      envelope = new ADEnvelope(attack_seconds);
+      envelope = new ADEnvelope(maximum_amplitude, attack_seconds);
     } else if(type == "AR") {
-      envelope = new AREnvelope(attack_seconds, sustain_amplitude, release_seconds);
+      envelope = new AREnvelope(maximum_amplitude, attack_seconds, sustain_amplitude, release_seconds);
     } else {
       std::stringstream ss;
       ss << "Unknown envelope type: '" << type << "'.";

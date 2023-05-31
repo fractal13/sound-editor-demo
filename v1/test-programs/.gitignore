@@ -1,7 +1,4 @@
-test_adsr_envelope
-test_ad_envelope
-test_ar_envelope
-test_sine_waveform
+test_envelope
 test_waveform
 test_instrument
 test_score_reader
