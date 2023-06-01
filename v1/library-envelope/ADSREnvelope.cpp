@@ -2,16 +2,42 @@
 #include <sstream>
 #include <stdexcept>
 
-ADSREnvelope::ADSREnvelope()
-  : Envelope(), mAttackSeconds(0.0), mDecaySeconds(0.0), mSustainAmplitude(0.5), mReleaseSeconds(0.0) {
+ADSREnvelope::ADSREnvelope(const std::string& name, const std::string& type_name)
+  : Envelope(name, type_name), mAttackSeconds(0.0), mDecaySeconds(0.0), mSustainAmplitude(0.5), mReleaseSeconds(0.0) {
 }
 
-ADSREnvelope::ADSREnvelope(const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds)
-  : Envelope(maximum_amplitude), mAttackSeconds(attack_seconds), mDecaySeconds(decay_seconds), mSustainAmplitude(sustain_amplitude), mReleaseSeconds(release_seconds) {
+ADSREnvelope::ADSREnvelope(const std::string& name, const std::string& type_name, const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds)
+  : Envelope(name, type_name, maximum_amplitude), mAttackSeconds(attack_seconds), mDecaySeconds(decay_seconds), mSustainAmplitude(sustain_amplitude), mReleaseSeconds(release_seconds) {
+}
+
+ADSREnvelope::ADSREnvelope(const std::string& name)
+  : Envelope(name, "ADSR"), mAttackSeconds(0.0), mDecaySeconds(0.0), mSustainAmplitude(0.5), mReleaseSeconds(0.0) {
+}
+
+ADSREnvelope::ADSREnvelope(const std::string& name, const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds)
+  : Envelope(name, "ADSR", maximum_amplitude), mAttackSeconds(attack_seconds), mDecaySeconds(decay_seconds), mSustainAmplitude(sustain_amplitude), mReleaseSeconds(release_seconds) {
 }
 
 ADSREnvelope::~ADSREnvelope() {
 }
+
+
+double ADSREnvelope::getAttackSeconds() const {
+  return mAttackSeconds;
+}
+
+double ADSREnvelope::getDecaySeconds() const {
+  return mDecaySeconds;
+}
+
+double ADSREnvelope::getSustainAmplitude() const {
+  return mSustainAmplitude;
+}
+
+double ADSREnvelope::getReleaseSeconds() const {
+  return mReleaseSeconds;
+}
+
 
 void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const {
 
@@ -96,7 +122,7 @@ void ADSREnvelope::assignReleaseAmplitudes(const int begin, const int end, Audio
 }
 
 ADSREnvelope* ADSREnvelope::clone() const {
-  auto copy = new ADSREnvelope;
+  auto copy = new ADSREnvelope(mName);
   *copy = *this;
   return copy;
 }

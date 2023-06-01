@@ -9,8 +9,6 @@
 #include <vector>
 
 int main(int argc, char **argv) {
-  int bits_per_sample = 16;
-  int samples_per_second = 44100;    // samples per second
   std::string input_filename = "../doc/mary-had-a-little-lamb.score";
   if(argc > 1) {
     std::stringstream arg(argv[1]);

@@ -1,8 +1,8 @@
 #include "SineWaveform.h"
 #include <cmath>
 
-SineWaveform::SineWaveform()
-  : Waveform() {
+SineWaveform::SineWaveform(const std::string& name)
+  : Waveform(name, "sine") {
 }
 
 SineWaveform::~SineWaveform() {
@@ -15,7 +15,7 @@ double SineWaveform::generateOneSample(const double frequency, const int sample_
 }
 
 SineWaveform* SineWaveform::clone() const {
-  auto copy = new SineWaveform;
+  auto copy = new SineWaveform(mName);
   *copy = *this;
   return copy;
 }

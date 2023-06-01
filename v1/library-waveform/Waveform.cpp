@@ -1,11 +1,29 @@
 #include "Waveform.h"
 #include <cmath>
 
-Waveform::Waveform() {
+Waveform::Waveform(const std::string& name, const std::string& type_name) 
+  : mName(name), mTypeName(type_name) {
 }
 
 Waveform::~Waveform() {
 }
+
+const std::string& Waveform::getName() const {
+  return mName;
+}
+
+const std::string& Waveform::getTypeName() const {
+  return mTypeName;
+}
+
+void Waveform::setName(const std::string& name) {
+  mName = name;
+}
+
+void Waveform::setTypeName(const std::string& type_name) {
+  mTypeName = type_name;
+}
+
 
 double Waveform::computeSampleAngle(const double frequency, const double sample_number, const int samples_per_second) const {
   double angle = (two_pi * sample_number * frequency) / samples_per_second;

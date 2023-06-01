@@ -66,3 +66,7 @@ void Mixer::mix(const std::map<std::string, AudioTrack>& tracks, std::vector<Aud
     }
   }
 }
+
+const std::vector<Channel>& Mixer::getChannels() const {
+  return mChannels;
+}

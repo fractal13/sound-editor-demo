@@ -1,8 +1,8 @@
 #include "TriangleWaveform.h"
 #include <cmath>
 
-TriangleWaveform::TriangleWaveform()
-  : Waveform() {
+TriangleWaveform::TriangleWaveform(const std::string& name)
+  : Waveform(name, "triangle") {
 }
 
 TriangleWaveform::~TriangleWaveform() {
@@ -23,7 +23,7 @@ double TriangleWaveform::generateOneSample(const double frequency, const int sam
 }
 
 TriangleWaveform* TriangleWaveform::clone() const {
-  auto copy = new TriangleWaveform;
+  auto copy = new TriangleWaveform(mName);
   *copy = *this;
   return copy;
 }

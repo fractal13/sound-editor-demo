@@ -15,13 +15,13 @@ int main(int argc, char *argv[]) {
     std::string waveform;
     arg >> waveform;
     if(waveform == "sine") {
-      f = new SineWaveform();
+      f = new SineWaveform("test-sine");
     } else if(waveform == "sawtooth") {
-      f = new SawtoothWaveform();
+      f = new SawtoothWaveform("test-sawtooth");
     } else if(waveform == "square") {
-      f = new SquareWaveform();
+      f = new SquareWaveform("test-square");
     } else if(waveform == "triangle") {
-      f = new TriangleWaveform();
+      f = new TriangleWaveform("test-triangle");
     } else {
       std::stringstream ss;
       ss << "Unknown waveform name: '" << waveform << "'.";

@@ -5,9 +5,17 @@
 
 class ADSREnvelope: public Envelope {
 public:
-  ADSREnvelope();
-  ADSREnvelope(const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds);
+  ADSREnvelope(const std::string& name, const std::string& type_name);
+  ADSREnvelope(const std::string& name, const std::string& type_name, const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds);
+  ADSREnvelope(const std::string& name);
+  ADSREnvelope(const std::string& name, const double maximum_amplitude, const double attack_seconds, const double decay_seconds, const double sustain_amplitude, const double release_seconds);
 virtual ~ADSREnvelope();
+
+  double getAttackSeconds() const;
+  double getDecaySeconds() const;
+  double getSustainAmplitude() const;
+  double getReleaseSeconds() const;
+
   virtual void generateAmplitudes(const double seconds, const int samples_per_second, AudioTrack& track) const;
 
   void assignAttackAmplitudes(const int begin, const int end, AudioTrack& track, const double a0, const double a1) const;

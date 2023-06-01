@@ -5,7 +5,7 @@
 
 class TriangleWaveform: public Waveform {
 public:
-  TriangleWaveform();
+  TriangleWaveform(const std::string& name);
   virtual ~TriangleWaveform();
   virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const;
   virtual TriangleWaveform* clone() const;

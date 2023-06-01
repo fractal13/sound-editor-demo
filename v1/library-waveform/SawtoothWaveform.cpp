@@ -1,8 +1,8 @@
 #include "SawtoothWaveform.h"
 #include <cmath>
 
-SawtoothWaveform::SawtoothWaveform()
-  : Waveform() {
+SawtoothWaveform::SawtoothWaveform(const std::string& name)
+  : Waveform(name, "sawtooth") {
 }
 
 SawtoothWaveform::~SawtoothWaveform() {
@@ -20,7 +20,7 @@ double SawtoothWaveform::generateOneSample(const double frequency, const int sam
 }
 
 SawtoothWaveform* SawtoothWaveform::clone() const {
-  auto copy = new SawtoothWaveform;
+  auto copy = new SawtoothWaveform(mName);
   *copy = *this;
   return copy;
 }

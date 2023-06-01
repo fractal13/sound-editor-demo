@@ -244,13 +244,13 @@ Waveform* ScoreReader::readWaveform(std::istream& is, MusicalScore& score) const
   if(!waveform) {
     // Check type
     if(type == "sine") {
-      waveform = new SineWaveform();
+      waveform = new SineWaveform(name);
     } else if(type == "sawtooth") {
-      waveform = new SawtoothWaveform();
+      waveform = new SawtoothWaveform(name);
     } else if(type == "square") {
-      waveform = new SquareWaveform();
+      waveform = new SquareWaveform(name);
     } else if(type == "triangle") {
-      waveform = new TriangleWaveform();
+      waveform = new TriangleWaveform(name);
     } else {
       std::stringstream ss;
       ss << "Unknown waveform type: '" << type << "'.";
@@ -319,11 +319,11 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
     }
 
     if(type == "ADSR") {
-      envelope = new ADSREnvelope(maximum_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
+      envelope = new ADSREnvelope(name, maximum_amplitude, attack_seconds, decay_seconds, sustain_amplitude, release_seconds);
     } else if(type == "AD") {
-      envelope = new ADEnvelope(maximum_amplitude, attack_seconds);
+      envelope = new ADEnvelope(name, maximum_amplitude, attack_seconds);
     } else if(type == "AR") {
-      envelope = new AREnvelope(maximum_amplitude, attack_seconds, sustain_amplitude, release_seconds);
+      envelope = new AREnvelope(name, maximum_amplitude, attack_seconds, sustain_amplitude, release_seconds);
     } else {
       std::stringstream ss;
       ss << "Unknown envelope type: '" << type << "'.";

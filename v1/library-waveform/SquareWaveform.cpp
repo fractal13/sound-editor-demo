@@ -1,8 +1,8 @@
 #include "SquareWaveform.h"
 #include <cmath>
 
-SquareWaveform::SquareWaveform()
-  : Waveform() {
+SquareWaveform::SquareWaveform(const std::string& name)
+  : Waveform(name, "square") {
 }
 
 SquareWaveform::~SquareWaveform() {
@@ -21,7 +21,7 @@ double SquareWaveform::generateOneSample(const double frequency, const int sampl
 }
 
 SquareWaveform* SquareWaveform::clone() const {
-  auto copy = new SquareWaveform;
+  auto copy = new SquareWaveform(mName);
   *copy = *this;
   return copy;
 }

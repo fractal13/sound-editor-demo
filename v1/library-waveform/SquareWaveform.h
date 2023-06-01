@@ -5,7 +5,7 @@
 
 class SquareWaveform: public Waveform {
 public:
-  SquareWaveform();
+  SquareWaveform(const std::string& name);
   virtual ~SquareWaveform();
   virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const;
   virtual SquareWaveform* clone() const;

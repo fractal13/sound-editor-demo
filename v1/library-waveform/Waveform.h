@@ -5,14 +5,22 @@
 
 #include <vector>
 #include <cmath>
+#include <string>
 
 //constexpr double two_pi = 6.283185307179586476925286766559;
 constexpr double two_pi = 8.0*std::atan(1);
 
 class Waveform {
 public:
-  Waveform();
+  Waveform(const std::string& name, const std::string& type_name);
   virtual ~Waveform();
+
+  const std::string& getName() const;
+  const std::string& getTypeName() const;
+
+  void setName(const std::string& name);
+  void setTypeName(const std::string& type_name);
+
   double computeSampleAngle(const double frequency, const double sample_number, const int samples_per_second) const;
   double computeSampleCyclePosition(const double frequency, const double sample_number, const int samples_per_second) const;
 
@@ -20,6 +28,8 @@ public:
   virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const = 0;
   virtual Waveform* clone() const = 0;
 protected:
+  std::string mName;
+  std::string mTypeName;
 private:
 };
 

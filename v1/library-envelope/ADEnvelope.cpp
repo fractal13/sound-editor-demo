@@ -2,12 +2,12 @@
 #include <sstream>
 #include <stdexcept>
 
-ADEnvelope::ADEnvelope()
-  : ADSREnvelope(1.0, 0.0, 0.0, 0.0, 0.0) {
+ADEnvelope::ADEnvelope(const std::string& name)
+  : ADSREnvelope(name, "AD", 1.0, 0.0, 0.0, 0.0, 0.0) {
 }
 
-ADEnvelope::ADEnvelope(const double maximum_amplitude, const double attack_seconds)
-  : ADSREnvelope(maximum_amplitude, attack_seconds, 0.0, 0.0, 0.0) {
+ADEnvelope::ADEnvelope(const std::string& name, const double maximum_amplitude, const double attack_seconds)
+  : ADSREnvelope(name, "AD", maximum_amplitude, attack_seconds, 0.0, 0.0, 0.0) {
 }
 
 ADEnvelope::~ADEnvelope() {
@@ -36,7 +36,7 @@ void ADEnvelope::generateAmplitudes(const double seconds, const int samples_per_
 }
 
 ADEnvelope* ADEnvelope::clone() const {
-  auto copy = new ADEnvelope;
+  auto copy = new ADEnvelope(mName);
   *copy = *this;
   return copy;
 }

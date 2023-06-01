@@ -17,7 +17,8 @@ public:
   void writeInstrument(std::ostream& os, const MusicalScore& score, const Instrument& instrument) const;
   void writeWaveform(std::ostream& os, const MusicalScore& score, const Waveform& waveform) const;
   void writeEnvelope(std::ostream& os, const MusicalScore& score, const Envelope& envelope) const;
-  void writeNote(std::ostream& os, const MusicalScore& score, const Note& note) const;
+  void writeStaffNote(std::ostream& os, const MusicalScore& score, const StaffNote& staff_note) const;
+  std::string formatNote(const Note& note) const;
 protected:
 private:
 };

@@ -33,6 +33,8 @@ public:
   
   void mix(const std::map<std::string, AudioTrack>& tracks, std::vector<AudioTrack>& channels);
 
+  const std::vector<Channel>& getChannels() const;
+
 protected:
   std::vector<Channel> mChannels;
 private:

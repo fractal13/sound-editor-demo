@@ -5,7 +5,7 @@
 
 class SineWaveform:  public Waveform {
 public:
-  SineWaveform();
+  SineWaveform(const std::string& name);
   virtual ~SineWaveform();
   virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const;
   virtual SineWaveform* clone() const;

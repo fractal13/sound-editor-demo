@@ -5,7 +5,7 @@
 
 class SawtoothWaveform: public Waveform {
 public:
-  SawtoothWaveform();
+  SawtoothWaveform(const std::string& name);
   virtual ~SawtoothWaveform();
   virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const;
   virtual SawtoothWaveform* clone() const;

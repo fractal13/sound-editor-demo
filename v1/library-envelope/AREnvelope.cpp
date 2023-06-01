@@ -2,12 +2,12 @@
 #include <sstream>
 #include <stdexcept>
 
-AREnvelope::AREnvelope()
-  : ADSREnvelope(1.0, 0.0, 0.0, 0.0, 0.0) {
+AREnvelope::AREnvelope(const std::string& name)
+  : ADSREnvelope(name, "AR", 1.0, 0.0, 0.0, 0.0, 0.0) {
 }
 
-AREnvelope::AREnvelope(const double maximum_amplitude, const double attack_seconds, const double sustain_amplitude, const double release_seconds)
-  : ADSREnvelope(maximum_amplitude, attack_seconds, 0.0, sustain_amplitude, release_seconds) {
+AREnvelope::AREnvelope(const std::string& name, const double maximum_amplitude, const double attack_seconds, const double sustain_amplitude, const double release_seconds)
+  : ADSREnvelope(name, "AR", maximum_amplitude, attack_seconds, 0.0, sustain_amplitude, release_seconds) {
 }
 
 AREnvelope::~AREnvelope() {
@@ -41,7 +41,7 @@ void AREnvelope::generateAmplitudes(const double seconds, const int samples_per_
 }
 
 AREnvelope* AREnvelope::clone() const {
-  auto copy = new AREnvelope;
+  auto copy = new AREnvelope(mName);
   *copy = *this;
   return copy;
 }

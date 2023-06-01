@@ -14,13 +14,17 @@ TARGETS := \
 	test_waveform \
 	test_instrument \
 	test_staff_render \
-	test_score_reader
+	test_score_reader \
+	test_score_writer
 
 all: $(TARGETS)
 
 test-all: test-waveform test-envelope test-instrument test-render test-score
 
 test_score_reader: test_score_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+test_score_writer: test_score_writer.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 test_staff_render: test_staff_render.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
