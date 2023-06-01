@@ -44,9 +44,14 @@ STAFF melody piano-right
 15.00 wB4
 STAFF-END
 
-STAFF harmony piano-left
-0.00 wC4
-15.00 wC4
-STAFF-END
+MIXER
+  CHANNEL 0
+  STAFF melody 1.0
+  CHANNEL-END
+
+  CHANNEL 1
+  STAFF melody 1.0
+  CHANNEL-END
+MIXER-END
 
 SCORE-END

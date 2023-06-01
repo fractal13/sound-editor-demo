@@ -74,6 +74,7 @@ void WaveFile::writeTracks(const std::vector<AudioTrack>& tracks) {
   if(tracks.size() != 2) {
     // hack stereo for now, still need a mixer
     std::stringstream ss;
+    ss << "WaveFile::writeTracks: ";
     ss << "Only support exactly 2 staves for now.";
     throw std::invalid_argument(ss.str());
   }

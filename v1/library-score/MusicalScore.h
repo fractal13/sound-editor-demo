@@ -6,6 +6,7 @@
 #include "Waveforms.h"
 #include "Envelopes.h"
 #include "AudioTrack.h"
+#include "Mixer.h"
 
 #include <vector>
 
@@ -27,6 +28,7 @@ public:
   Instrumentarium& getInstrumentarium();
   Waveforms& getWaveforms();
   Envelopes& getEnvelopes();
+  Mixer& getMixer();
 
   void renderStaff(const unsigned int index, const int samples_per_second, AudioTrack& track) const;
 
@@ -37,6 +39,7 @@ private:
   Instrumentarium mInstrumentarium;
   Waveforms mWaveforms;
   Envelopes mEnvelopes;
+  Mixer mMixer;
 };
 
 #endif /* _MUSICALSCORE_H_ */

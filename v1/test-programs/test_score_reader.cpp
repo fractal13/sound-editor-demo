@@ -32,16 +32,24 @@ int main(int argc, char **argv) {
   f.close();
   
   unsigned int i;
-  std::vector<AudioTrack> tracks;
+  std::map<std::string, AudioTrack> tracks;
   for(i = 0; i < score.getNumberOfStaves(); i++) {
-    tracks.push_back(AudioTrack());
-    score.renderStaff(i, samples_per_second, tracks[i]);
+    //std::cout << "staff["<<i<<"] name = " << score.getStaff(i).getName() << std::endl;
+    //std::cout << "staff["<<i<<"] duration = " << score.getStaff(i).getDurationInWholeNotes() << std::endl;
+    auto& track = tracks[score.getStaff(i).getName()] = AudioTrack();
+    score.renderStaff(i, samples_per_second, track);
   }
+  //  for(auto& track: tracks) {
+  //    std::cout << "track: " << track.first << " " << track.second.size() << " " << track.second.getSeconds() << std::endl;
+  //  }
+
+  std::vector<AudioTrack> channels;
+  score.getMixer().mix(tracks, channels);
 
   WaveFile wave(output_filename, samples_per_second, bits_per_sample);
   wave.writeHeader();
   wave.writeDataSubchunkHeader();
-  wave.writeTracks(tracks);
+  wave.writeTracks(channels);
   wave.writeSizes();
   wave.close();
 

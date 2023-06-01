@@ -5,15 +5,15 @@
 #include <stdexcept>
 
 MusicalStaff::MusicalStaff()
-  : mInstrument(0), mNotes() {
+  : mName(""), mInstrument(0), mNotes() {
 }
 
 MusicalStaff::MusicalStaff(Instrument *instrument)
-  : mInstrument(instrument), mNotes() {
+  : mName(""), mInstrument(instrument), mNotes() {
 }
 
 MusicalStaff::MusicalStaff(const MusicalStaff& src)
-  : mInstrument(0), mNotes(src.mNotes) {
+  : mName(src.mName), mInstrument(0), mNotes(src.mNotes) {
   if(src.mInstrument) {
     mInstrument = src.mInstrument->clone();
   }

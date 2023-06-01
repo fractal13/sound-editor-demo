@@ -94,4 +94,14 @@ STAFF harmony piano-left
 7.00 wF3
 STAFF-END
 
+MIXER
+  CHANNEL 0
+  STAFF melody 1.0
+  CHANNEL-END
+
+  CHANNEL 1
+  STAFF harmony 0.7
+  CHANNEL-END
+MIXER-END
+
 SCORE-END

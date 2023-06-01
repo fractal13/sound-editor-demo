@@ -77,6 +77,10 @@ Envelopes& MusicalScore::getEnvelopes() {
   return mEnvelopes;
 }
 
+Mixer& MusicalScore::getMixer() {
+  return mMixer;
+}
+
 void MusicalScore::renderStaff(const unsigned int index, const int samples_per_second, AudioTrack& track) const {
   const MusicalStaff& staff = getStaff(index);
   staff.render(mTimeSignature, mTempo, samples_per_second, track);

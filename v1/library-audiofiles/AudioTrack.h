@@ -26,6 +26,7 @@ public:
   double& operator[](const unsigned int i);
 
   AudioTrack operator*(const AudioTrack& rhs) const;
+  AudioTrack operator*(const double rhs) const;
 
   AudioTrack& operator+=(const AudioTrack& rhs);
   

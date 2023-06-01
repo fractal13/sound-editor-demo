@@ -109,6 +109,24 @@ AudioTrack AudioTrack::operator*(const AudioTrack& rhs) const {
   return track;
 }
 
+AudioTrack AudioTrack::operator*(const double rhs) const {
+  AudioTrack track;
+  if(rhs < 0.0) {
+    std::stringstream ss;
+    ss << "AudioTrack objects must be scaled by non-negative number." << std::endl;
+    ss << "rhs: " << rhs << std::endl;
+    throw std::invalid_argument(ss.str());
+  }
+
+  track.setSize(mSamplesPerSecond, mSeconds);
+  unsigned int i;
+  for(i = 0; i < mValues.size(); i++) {
+    track[i] = (*this)[i] * rhs;
+  }
+  return track;
+}
+
+
 AudioTrack& AudioTrack::operator+=(const AudioTrack& rhs) {
   unsigned int loffset = getOffset();
   unsigned int offset = rhs.getOffset();

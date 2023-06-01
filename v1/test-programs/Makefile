@@ -70,7 +70,7 @@ test-render: scale-render.pdf
 	-rm -f $*.csv
 
 #
-test-score: mary-had-a-little-lamb.wav the-bare-neccessities.wav notes.wav
+test-score: mary-had-a-little-lamb.wav the-bare-neccessities.wav notes.wav linus-lucy.wav
 
 %.wav: test_score_reader ../doc/%.score
 	./test_score_reader 16 ../doc/$*.score $@

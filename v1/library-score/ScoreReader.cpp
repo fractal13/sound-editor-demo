@@ -39,6 +39,8 @@ void ScoreReader::readScore(std::istream& is, MusicalScore& score) const {
       if(instrument) {
         delete instrument;
       }
+    } else if(word == "MIXER") {
+      readMixer(is, score, score.getMixer());
     } else if(word == "SCORE-END") {
       break;
     } else {
@@ -64,7 +66,9 @@ void ScoreReader::readStaff(std::istream& is, MusicalScore& score, MusicalStaff&
     ss << "Expected an instrument name, but got: '" << instrument_name << "'.";
     throw std::invalid_argument(ss.str());
   }
+  //std::cout << "staff read name: '" << name << "'" << std::endl;
   staff.setName(name);
+  //std::cout << "staff stored name: '" << staff.getName() << "'" << std::endl;
   staff.setInstrument(instrument);
 
   std::string word;
@@ -83,6 +87,58 @@ void ScoreReader::readStaff(std::istream& is, MusicalScore& score, MusicalStaff&
     staff.addNote(staff_note);
   }
 
+}
+
+void ScoreReader::readMixer(std::istream& is, MusicalScore& score, Mixer& mixer) const {
+  /* assumes MIXER keyword has already been consumed
+MIXER
+  CHANNEL 0
+    STAFF piano1 0.7
+    STAFF bass1 0.3
+  CHANNEL-END
+
+  CHANNEL 1
+    STAFF piano2 0.7
+    STAFF bass1 0.3
+  CHANNEL-END
+MIXER-END
+   */
+  std::string word;
+  while(is >> word && word != "MIXER-END") {
+    if(word == "CHANNEL") {
+      Channel channel;
+      readChannel(is, score, channel);
+      mixer.addChannel(channel);
+    } else {
+      std::stringstream ss;
+      ss << "Expected a CHANNEL clause, but got: '" << word << "'.";
+      throw std::invalid_argument(ss.str());
+    }
+  }
+}
+void ScoreReader::readChannel(std::istream& is, MusicalScore& score, Channel& channel) const {
+  /* assumes CHANNEL keyword has already been consumed
+  CHANNEL 0
+    STAFF piano1 0.7
+    STAFF bass1 0.3
+  CHANNEL-END
+   */
+  (void) score;
+  std::string word, staff_name;
+  int channel_number;
+  double weight;
+  is >> channel_number;
+  channel.setChannelNumber(channel_number);
+  while(is >> word && word != "CHANNEL-END") {
+    if(word == "STAFF") {
+      is >> staff_name >> weight;
+      channel.addStaff(staff_name, weight);
+    } else {
+      std::stringstream ss;
+      ss << "Expected a STAFF clause, but got: '" << word << "'.";
+      throw std::invalid_argument(ss.str());
+    }
+  }
 }
 
 void ScoreReader::parseNote(const std::string& word, Note& note) const {
