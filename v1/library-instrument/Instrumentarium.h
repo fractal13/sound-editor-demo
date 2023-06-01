@@ -11,6 +11,14 @@ public:
   virtual ~Instrumentarium();
   void addInstrument(const std::string& name, Instrument *instrument);
   Instrument *getInstrument(const std::string& name);
+
+  typedef std::map<std::string, Instrument *>::iterator iterator;
+  typedef std::map<std::string, Instrument *>::const_iterator const_iterator;
+  iterator begin();
+  const_iterator begin() const;
+  iterator end();
+  const_iterator end() const;
+
 protected:
   std::map<std::string, Instrument *> mInstruments;
 private:

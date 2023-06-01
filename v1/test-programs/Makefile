@@ -75,6 +75,14 @@ test-score: mary-had-a-little-lamb.wav the-bare-neccessities.wav notes.wav linus
 %.wav: test_score_reader ../doc/%.score
 	./test_score_reader 16 ../doc/$*.score $@
 
+test-score-writer: mary-had-a-little-lamb.score the-bare-neccessities.score notes.score linus-lucy.score
+
+notes.score: test_score_writer ../doc/notes.score
+	./test_score_writer ../doc/notes.score notes.score
+
+# %.score: test_score_writer ../doc/%.score
+# 	./test_score_writer ../doc/$*.score $@
+
 ######################################
 # automatic dependency generation
 #

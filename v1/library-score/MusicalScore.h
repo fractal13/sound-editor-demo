@@ -26,9 +26,13 @@ public:
   unsigned int getNumberOfStaves() const;
 
   Instrumentarium& getInstrumentarium();
+  const Instrumentarium& getInstrumentarium() const;
   Waveforms& getWaveforms();
+  const Waveforms& getWaveforms() const;
   Envelopes& getEnvelopes();
+  const Envelopes& getEnvelopes() const;
   Mixer& getMixer();
+  const Mixer& getMixer() const;
 
   void renderStaff(const unsigned int index, const int samples_per_second, AudioTrack& track) const;
 

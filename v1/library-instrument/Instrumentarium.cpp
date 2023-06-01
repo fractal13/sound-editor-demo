@@ -31,3 +31,19 @@ Instrument *Instrumentarium::getInstrument(const std::string& name) {
   }
   return instrument;
 }
+
+Instrumentarium::iterator Instrumentarium::begin() { 
+  return mInstruments.begin(); 
+}
+
+Instrumentarium::const_iterator Instrumentarium::begin() const { 
+  return mInstruments.begin(); 
+}
+
+Instrumentarium::iterator Instrumentarium::end() { 
+  return mInstruments.end(); 
+}
+
+Instrumentarium::const_iterator Instrumentarium::end() const {
+  return mInstruments.end();
+}

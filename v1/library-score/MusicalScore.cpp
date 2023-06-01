@@ -69,7 +69,15 @@ Instrumentarium& MusicalScore::getInstrumentarium() {
   return mInstrumentarium;
 }
 
+const Instrumentarium& MusicalScore::getInstrumentarium() const {
+  return mInstrumentarium;
+}
+
 Waveforms& MusicalScore::getWaveforms() {
+  return mWaveforms;
+}
+
+const Waveforms& MusicalScore::getWaveforms() const {
   return mWaveforms;
 }
 
@@ -77,7 +85,15 @@ Envelopes& MusicalScore::getEnvelopes() {
   return mEnvelopes;
 }
 
+const Envelopes& MusicalScore::getEnvelopes() const {
+  return mEnvelopes;
+}
+
 Mixer& MusicalScore::getMixer() {
+  return mMixer;
+}
+
+const Mixer& MusicalScore::getMixer() const {
   return mMixer;
 }
 
