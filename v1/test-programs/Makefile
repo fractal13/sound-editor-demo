@@ -2,12 +2,12 @@ LIBDIR := ../lib
 INCDIR := ../include
 CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic -Werror -I $(INCDIR) -g
-LDFLAGS := -L $(LIBDIR) -lscore -linstrument -lenvelope -lwaveform -laudiofiles
+LDFLAGS := -L $(LIBDIR) -lscore -linstrument -lenvelope -lwaveform -laudiofiles -lmidifile
 SRCS    := $(sort $(wildcard *.cpp))
 MAINSRCS    := $(shell egrep 'int main' $(wildcard *.cpp) /dev/null | awk -F: '{print $$1;}' | uniq)
 COMMON_SRCS := $(filter-out $(MAINSRCS),$(SRCS))
 COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
-LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a  $(LIBDIR)/libscore.a $(LIBDIR)/libaudiofiles.a
+LIBRARY_FILES := $(LIBDIR)/libenvelope.a $(LIBDIR)/libwaveform.a $(LIBDIR)/libinstrument.a  $(LIBDIR)/libscore.a $(LIBDIR)/libaudiofiles.a $(LIBDIR)/libmidifile.a
 INCLUDE_FILES := $(wildcard ../include/*.h)
 TARGETS := \
 	test_envelope \
@@ -15,11 +15,15 @@ TARGETS := \
 	test_instrument \
 	test_staff_render \
 	test_score_reader \
-	test_score_writer
+	test_score_writer \
+	test_midi_reader
 
 all: $(TARGETS)
 
 test-all: test-waveform test-envelope test-instrument test-render test-score
+
+test_midi_reader: test_midi_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 test_score_reader: test_score_reader.o $(COMMON_OBJECTS) $(LIBRARY_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
@@ -83,6 +87,11 @@ test-score-writer: mary-had-a-little-lamb.score the-bare-neccessities.score note
 
 notes.score: test_score_writer ../doc/notes.score
 	./test_score_writer ../doc/notes.score notes.score
+
+test-midi-reader: Beethoven-Moonlight-Sonata.score
+
+Beethoven-Moonlight-Sonata.score: test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid
+	./test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid $@
 
 # %.score: test_score_writer ../doc/%.score
 # 	./test_score_writer ../doc/$*.score $@

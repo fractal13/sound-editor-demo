@@ -4,5 +4,6 @@ test_instrument
 test_staff_render
 test_score_reader
 test_score_writer
+test_midi_reader
 *.pdf
 *.wav
