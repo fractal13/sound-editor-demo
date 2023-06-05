@@ -4,6 +4,11 @@
 #include <sstream>
 #include <exception>
 #include <stdexcept>
+#include <cmath>
+#include <vector>
+#include <mutex>
+
+std::map<std::string, double> Note::smFrequencies = {};
 
 // FIXME all frequencies should be computed.
 static const std::map<std::string, double> g_frequencies =
@@ -83,10 +88,12 @@ static const std::map<std::string, double> g_frequencies =
 
 Note::Note() 
   : mName(""), mDuration(0.0) {
+  buildFrequencies();
 }
 
 Note::Note(const std::string& name, const double& duration) 
   : mName(name), mDuration(duration) {
+  buildFrequencies();
 }
 
 const std::string& Note::getName() const {
@@ -99,8 +106,8 @@ const double& Note::getDuration() const {
 
 double Note::getFrequency() const {
   double frequency = 440.000;
-  auto iter = g_frequencies.find(mName);
-  if(iter != g_frequencies.end()) {
+  auto iter = smFrequencies.find(mName);
+  if(iter != smFrequencies.end()) {
     frequency = iter->second;
   } else {
     std::stringstream ss;
@@ -111,8 +118,8 @@ double Note::getFrequency() const {
 }
 
 void Note::setName(const std::string& name) {
-  auto iter = g_frequencies.find(name);
-  if(iter != g_frequencies.end()) {
+  auto iter = smFrequencies.find(name);
+  if(iter != smFrequencies.end()) {
     mName = name;
   }
 }
@@ -120,4 +127,58 @@ void Note::setDuration(const double duration) {
   if(duration > 0.0) {
     mDuration = duration;
   }
+}
+
+std::mutex g_build_lock;
+void Note::buildFrequencies() {
+  g_build_lock.lock();
+  if(smFrequencies.size() > 0) {
+    g_build_lock.unlock();
+    return;
+  }
+  
+  double trt = std::pow(2.0, 1.0/12.0); // twelveth root of two
+  double A4 = 440.0; // reference note
+  double C0 = A4 / (std::pow(2.0, 4.0) * std::pow(trt, 9.0)); // convert 4 octaves and 9 notes below A4 to get C0
+  /*
+  double A0 = A4 / (std::pow(2.0, 4.0)); // convert 4 octaves
+  std::cout << std::endl 
+            << "C0: " << C0
+            << std::endl
+            << std::endl
+            << "12th root of 2: " << trt
+            << std::endl
+            << std::endl
+            << "12th root of 2 to the 12th: " << std::pow(trt, 12.0)
+            << std::endl
+            << std::endl
+            << "A0: " << A0
+            << std::endl
+            << std::endl;
+  */
+  int octave; // 0 - 9
+  int octave_position; // 0 - 11
+  std::vector<std::string> names1 = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+  std::vector<std::string> names2 = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+  for(octave = 0; octave <= 9; octave++) {
+    for(octave_position = 0; octave_position < 12; octave_position++) {
+      double frequency = C0 * (std::pow(2.0, octave) * std::pow(trt, octave_position));
+      std::stringstream ss;
+      ss << names1[octave_position] << octave;
+      std::string name1 = ss.str();
+      ss.str("");
+      ss << names2[octave_position] << octave;
+      std::string name2 = ss.str();
+      smFrequencies[name1] = frequency;
+      if(name2 != name1) {
+        smFrequencies[name2] = frequency;
+      }
+    }
+  }
+  g_build_lock.unlock();
+}
+
+std::ostream& operator<<(std::ostream& os, const Note& note) {
+  os << note.getDuration() << " " << note.getName() << "(" << note.getFrequency() << ")";
+  return os;
 }

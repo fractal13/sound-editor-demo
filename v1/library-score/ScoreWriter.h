@@ -2,7 +2,13 @@
 #define _SCOREWRITER_H_
 
 #include "MusicalScore.h"
+#include "MusicalStaff.h"
 #include "Mixer.h"
+#include "Instrument.h"
+#include "Waveform.h"
+#include "Envelope.h"
+#include "StaffNote.h"
+#include "Note.h"
 #include <iostream>
 
 class ScoreWriter {

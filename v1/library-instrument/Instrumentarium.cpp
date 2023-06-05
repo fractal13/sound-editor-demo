@@ -1,4 +1,6 @@
 #include "Instrumentarium.h"
+#include "EasyInstrument.h"
+#include <sstream>
 
 Instrumentarium::Instrumentarium() {
 }
@@ -30,6 +32,20 @@ Instrument *Instrumentarium::getInstrument(const std::string& name) {
     instrument = item->second->clone();
   }
   return instrument;
+}
+
+Instrument *Instrumentarium::getInstrument(const int midi_instrument_number) {
+  std::stringstream ss;
+  ss << "midi-instrument-" << midi_instrument_number;
+  std::string name = ss.str();
+  auto item = mInstruments.find(name);
+  if(item == mInstruments.end()) {
+    // FIXME: choose instrument based on actual midi number
+    Instrument *midi_instrument = new EasyInstrument("sine", "ADSR");
+    midi_instrument->setName(name);
+    addInstrument(name, midi_instrument);
+  }
+  return getInstrument(name);
 }
 
 Instrumentarium::iterator Instrumentarium::begin() { 

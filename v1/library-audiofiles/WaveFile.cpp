@@ -1,6 +1,4 @@
 #include "WaveFile.h"
-#include "Instrument.h"
-#include "Envelope.h"
 #include <iostream>
 #include <string>
 #include <iomanip>

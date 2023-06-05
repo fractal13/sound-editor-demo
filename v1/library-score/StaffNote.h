@@ -2,6 +2,7 @@
 #define _STAFFNOTE_H_
 
 #include "Note.h"
+#include <iostream>
 
 class StaffNote {
 public:
@@ -17,6 +18,8 @@ private:
   Note   mNote;  // frequency and duration
   double mStart; // fraction of whole notes since beginning of staff
 };
+
+std::ostream& operator<<(std::ostream& os, const StaffNote& staff_note);
 
 #endif /* _STAFFNOTE_H_ */
 /* Local Variables: */

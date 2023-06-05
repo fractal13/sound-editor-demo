@@ -130,7 +130,7 @@ std::string ScoreWriter::formatNote(const Note& note) const {
     duration_letter = "w.";
   } else {
     std::stringstream ss;
-    ss << "Expected known not duration but got: '" << duration << "'.";
+    ss << "Expected known not duration but got: '" << duration << "'." << " " << __FILE__ << ":" << __LINE__;
     throw std::invalid_argument(ss.str());
   }
   ss << duration_letter << note.getName();

@@ -32,3 +32,9 @@ void StaffNote::setStart(const double start) {
     mStart = start;
   }
 }
+
+
+std::ostream& operator<<(std::ostream& os, const StaffNote& staff_note) {
+  os << staff_note.getStart() << " " << staff_note.getNote();
+  return os;
+}

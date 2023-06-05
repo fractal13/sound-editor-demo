@@ -11,6 +11,7 @@ public:
   virtual ~Instrumentarium();
   void addInstrument(const std::string& name, Instrument *instrument);
   Instrument *getInstrument(const std::string& name);
+  Instrument *getInstrument(const int midi_instrument_number);
 
   typedef std::map<std::string, Instrument *>::iterator iterator;
   typedef std::map<std::string, Instrument *>::const_iterator const_iterator;
