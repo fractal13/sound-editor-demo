@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 
+constexpr double SIXTEENTH_NOTE = 0.125/2.0;
 constexpr double EIGHTH_NOTE = 0.125;
 constexpr double QUARTER_NOTE = 0.25;
 constexpr double HALF_NOTE = 0.50;

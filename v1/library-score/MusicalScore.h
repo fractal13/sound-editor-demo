@@ -24,6 +24,7 @@ public:
   MusicalStaff& getStaff(const unsigned int index);
   const MusicalStaff& getStaff(const unsigned int index) const;
   unsigned int getNumberOfStaves() const;
+  void setUniqueStaffName(MusicalStaff& staff) const;
 
   Instrumentarium& getInstrumentarium();
   const Instrumentarium& getInstrumentarium() const;

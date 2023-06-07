@@ -2,12 +2,12 @@
 #include "MidiFile.h"
 #include "MidiEventList.h"
 #include "MidiEvent.h"
+#include "debug.h"
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
 #include <sstream>
-#include <stdexcept>
 #include <cctype>
 
 MidiReader::MidiReader() {
@@ -33,9 +33,10 @@ void MidiReader::readScore(std::istream& is, MusicalScore& score) const {
   midifile.read(is);
   midifile.doTimeAnalysis();
   midifile.linkNotePairs();
-  readTiming(midifile, score);
 
   std::cout << "TPQ: " << midifile.getTicksPerQuarterNote() << std::endl;
+
+  readTiming(midifile, score);
 
   int tracks = midifile.getTrackCount();
   if(tracks > 1) std::cout << "TRACKS: " << tracks << std::endl;
@@ -44,15 +45,15 @@ void MidiReader::readScore(std::istream& is, MusicalScore& score) const {
     /* 
      * Assumes first track is timing track.
      */
-    std::stringstream ss;
-    ss << "Midifile has < 2 tracks.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Midifile has < 2 tracks. '" << midifile.getTrackCount() << "' is less than 2.");
   }
   for(int track=1; track<tracks; track++) {
     if(trackHasNotes(midifile, track)) {
       readTrack(midifile, track, score);
-      continue;
+    } else {
+      // FIXME what to do with noteless tracks?
     }
+    /*
     if(tracks > 1) std::cout << "\nTrack " << track << std::endl;
 
     std::cout << "Tick\tSeconds\tDur\tMessage" << std::endl;
@@ -147,31 +148,32 @@ void MidiReader::readScore(std::istream& is, MusicalScore& score) const {
 
       std::cout << std::endl;
     }
+    */
   }
-  
+  addMixer(score);
 }
 
 void MidiReader::readTiming(smf::MidiFile& midifile, MusicalScore& score) const {
-  /* Assumes that Track 0 is the timing track.
+  /* Assumes that Track 0 is the timing track. (FIXME)
    * Grabs 
    *   the FIRST TimeSignature
    *   the FIRST Tempo
    * Assigns them to the MusicalScore
    */
-  int track = 0;
   if(midifile.getTrackCount() < 1) {
-    std::stringstream ss;
-    ss << "Midifile has < 1 tracks.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Midifile has < 1 tracks.");
   }
-  int event;
+  int track = 0;
   bool first_time = true;
   bool first_tempo = true;
-  for(event = 0; event < midifile[track].size(); event++) {
+  smf::MidiEventList& event_list = midifile[track];
+  int i;
+  for(i = 0; i < event_list.size(); i++) {
+    smf::MidiEvent& event = event_list[i];
     
-    if(first_time && midifile[track][event].isTimeSignature()) {
-      int nn = (int)midifile[track][event][3];
-      int dd = (int)midifile[track][event][4];
+    if(first_time && event.isTimeSignature()) {
+      int nn = (int)event[3];
+      int dd = (int)event[4];
       int beat_value = 1;
       int i;
       for(i = 0; i < dd; i++) {
@@ -179,39 +181,22 @@ void MidiReader::readTiming(smf::MidiFile& midifile, MusicalScore& score) const 
       }
       score.getTimeSignature().setBeatsPerBar(nn);
       score.getTimeSignature().setBeatValue(beat_value);
-      
-      // int cc = (int)midifile[track][event][5];
-      // int bb = (int)midifile[track][event][6];
-      // std::cout << "TIME:SIG: "
-      //           << std::dec
-      //           << nn << "/" 
-      //           << dd << " "
-      //           << cc << " "
-      //           << bb ;
       first_time = false;
+      displayEventText(event);
     }
-    if(first_tempo && midifile[track][event].isTempo()) {
-      double BPM = midifile[track][event].getTempoBPM();
+    if(first_tempo && event.isTempo()) {
+      double BPM = event.getTempoBPM();
       score.setTempo(BPM);
-      std::cout << "TEMPO: " << std::dec << BPM << " bpm " ;
-      std::cout << "TPQ: " << std::dec << midifile.getTPQ() << " tpq" ;
-      std::cout << std::endl;
       first_tempo = false;
+      displayEventText(event);
     }
-    // if(midifile[track][event].isKeySignature()) {
-    //   int key = (int)midifile[track][event][3];
-    //   int minor = (int)midifile[track][event][4];
-    //   std::cout << "KEY: " << std::dec << key << " " << minor ;
-    // }
   }
 
 }
 
 bool MidiReader::trackHasNotes(smf::MidiFile& midifile, const int track) const {
   if(midifile.getTrackCount() < track + 1) {
-    std::stringstream ss;
-    ss << "Midifile has < " << track + 1 << " tracks.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Midifile has < " << track + 1 << " tracks.");
   }
   bool result = false;
   smf::MidiEventList& event_list = midifile[track];
@@ -228,11 +213,9 @@ bool MidiReader::trackHasNotes(smf::MidiFile& midifile, const int track) const {
 
 void MidiReader::readTrack(smf::MidiFile& midifile, const int track, MusicalScore& score) const {
   if(midifile.getTrackCount() < track + 1) {
-    std::stringstream ss;
-    ss << "Midifile has < " << track + 1 << " tracks.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Midifile has < " << track + 1 << " tracks.");
   }
-
+  std::cout << "Track : " << track << std::endl;
   unsigned int staff_index = score.createStaff();
   MusicalStaff& staff = score.getStaff(staff_index);
   
@@ -252,11 +235,35 @@ void MidiReader::readTrack(smf::MidiFile& midifile, const int track, MusicalScor
       }
       staff.setName(spaceless);
     } else if(event.isNoteOn()) {
+      /*
+        if a midi quarter note is 24 ticks; then
+        whole note = 96 ticks
+        half note = 48 ticks
+        quarter note = 24 ticks
+        eighth note =  12 ticks
+        dotted eighth note =  18 ticks
+        dotted quarter note =  36 ticks
+        dotted half note =  72 ticks
+      */
+
+      double tpq = midifile.getTicksPerQuarterNote();
+      double duration = QUARTER_NOTE * (event.getTickDuration() / tpq);
+      
+      /*
+      switch(event.getTickDuration()) {
+      case 12: duration = EIGHTH_NOTE; break;
+      case 24: duration = QUARTER_NOTE; break;
+      case 48: duration = HALF_NOTE; break;
+      case 96: duration = WHOLE_NOTE; break;
+      default:
+        std::cout << "TD: " << event.getTickDuration() << " ";
+        break;
+      }
+      */
+
       // FIXME: need to convert duration from seconds to Note duration
       // event.tick;
-      double start = event.seconds;
-      double duration = event.getDurationInSeconds();
-      duration = QUARTER_NOTE;
+      double start = QUARTER_NOTE * event.tick / tpq;
       int note_number = event.getP1();
       std::string note_name = mNoteNumbersToNames.find(note_number)->second;
       Note note(note_name, duration);
@@ -287,14 +294,17 @@ void MidiReader::readTrack(smf::MidiFile& midifile, const int track, MusicalScor
       std::cout << "OUCH: ";
       displayEventText(event);
     }
-    
-    
+  }
+
+  if(staff.getName() == "") {
+    score.setUniqueStaffName(staff);
   }
   
 }
 
 
 void MidiReader::displayEventText(smf::MidiEvent& event) const {
+  std::cout << "[ ";
   std::cout << std::dec << event.tick;
   std::cout << '\t' << std::dec << event.seconds;
   std::cout << '\t';
@@ -306,84 +316,191 @@ void MidiReader::displayEventText(smf::MidiEvent& event) const {
   for(unsigned int i=0; i<event.size(); i++) {
     std::cout << (int)event[i] << ' ';
   }
+  std::cout << " ] ";
+
   
-  if(event.isNoteOn()) {
-    std::cout << "NOTE-ON : " << std::dec;
-  }
-  if(event.isNoteOff()) {
-    std::cout << "NOTE-OFF : " << std::dec;
-  }
-  if(event.isText()) {
-    std::string text = event.getMetaContent();
-    std::cout << "TEXT : " << std::dec << text ;
-  }
-  if(event.isCopyright()) {
-    std::string text = event.getMetaContent();
-    std::cout << "COPYRIGHT : " << std::dec << text ;
-  }
-  if(event.isTrackName()) {
-    std::string text = event.getMetaContent();
-    std::cout << "TRACK-NAME: " << std::dec << text ;
-  }
-  if(event.isInstrumentName()) {
-    std::string text = event.getMetaContent();
-    std::cout << "INSTRUMENT-NAME: " << std::dec << text ;
-  }
-  if(event.isLyricText()) {
-    std::string text = event.getMetaContent();
-    std::cout << "LYRIC-TEXT: " << std::dec << text ;
-  }
-  if(event.isMarkerText()) {
-    std::string text = event.getMetaContent();
-    std::cout << "MARKER-TEXT: " << std::dec << text ;
-  }
-  if(event.isMetaMessage() &&
-     event.getMetaType() == 0x21) {
-    int device_id = event.getP3();
-    std::cout << "DEVICE: " << std::dec << device_id ;
-  }
-  if(event.isMetaMessage() &&
-     event.getMetaType() == 0x7f) {
-    std::string text = event.getMetaContent();
-    std::cout << "Specific: " << std::dec << text ;
-  }
-  if(event.isEndOfTrack()) {
-    std::cout << "EOT" ;
-  }
-  
-  if(event.isController()) {
+  if(event.isNote()) {
+    std::cout << "NOTE-";
+    if(event.isNoteOn()) {
+      std::cout << "ON : ";
+      
+      int note_number = event.getP1();
+      int base7, accidental;
+      event.getSpelling(base7, accidental);
+      std::cout << event.seconds << " "
+                << event.getDurationInSeconds() << " "
+                << std::dec
+                << base7 << " "
+                << accidental << " "
+                << mNoteNumbersToNames.find(note_number)->second;
+
+    } else if(event.isNoteOff()) {
+      std::cout << "OFF : ";
+    } else {
+      std::cout << std::endl;
+      DEBUG_INVALID("Unexpected NOTE event.");
+    }
+  } else if(event.isController()) {
     int number = event.getControllerNumber();
     int value = event.getControllerValue();
+
+    std::cout << "CONTROLLER-";
     
-    if(event.isSustainOn()) {
-      std::cout << "SUSTAIN-ON ";
-    } else if(event.isSustainOff()) {
-      std::cout << "SUSTAIN-OFF ";
-    } else if(event.isSustain()) {
-      std::cout << "SUSTAIN ";
+    if(event.isSustain()) {
+      std::cout << "SUSTAIN-";
+      if(event.isSustainOn()) {
+        std::cout << "ON : ";
+      } else if(event.isSustainOff()) {
+        std::cout << "OFF : ";
+      } else {
+        std::cout << std::endl;
+        DEBUG_INVALID("Unexpected SUSTAIN event.");
+      }
+    } else if(event.isSoft()) {
+      std::cout << "SOFT-";
+      if(event.isSoftOn()) {
+        std::cout << "ON : ";
+      } else if(event.isSoftOff()) {
+        std::cout << "OFF : ";
+      } else {
+        std::cout << std::endl;
+        DEBUG_INVALID("Unexpected SOFT event.");
+      }
+    } else if(number == 0x00) {
+      std::cout << "BANK-SELECT : ";
+    } else if(number == 0x01) {
+      std::cout << "MODULATION-WHEEL : ";
+    } else if(number == 0x06) {
+      std::cout << "DATA-ENTRY-MSB : ";
+    } else if(number == 0x07) {
+      std::cout << "CHANNEL-VOLUME : ";
+    } else if(number == 0x0A) {
+      std::cout << "PAN : ";
+    } else if(number == 0x0B) {
+      std::cout << "EXPRESSION-CONTROLLER : ";
+    } else if(number == 0x20) {
+      std::cout << "LSB-BANK-SELECT : ";
+    } else if((number & 0xF0) == 0x20) {
+      std::cout << "LSB-CONTROL-" << std::dec << (number & 0xF) << " : ";
+    } else if(number == 0x5B) {
+      std::cout << "EFFECTS-1-DEPTH : ";
+    } else if(number == 0x5D) {
+      std::cout << "EFFECTS-3-DEPTH : ";
+    } else if(number == 0x62) {
+      std::cout << "NRPN-LSB : ";
+    } else if(number == 0x63) {
+      std::cout << "NRPN-MSB : ";
+    } else if(number == 0x64) {
+      std::cout << "RPN-LSB : ";
+    } else if(number == 0x65) {
+      std::cout << "RPN-MSB : ";
+    } else if(number == 0x78) {
+      std::cout << "ALL-SOUND-OFF : ";
+    } else if(number == 0x79) {
+      std::cout << "RESET-ALL-CONTROLLERS : ";
+    } else if(number == 0x7B) {
+      std::cout << "ALL-NOTES-OFF : ";
     } else {
-      std::cout << "CONTROLLER ";
+      std::cout << std::endl;
+      DEBUG_INVALID("Unexpected CONTROLLER event.");
     }
-    
-    std::cout << std::dec << number << " " << value ;
-  }
-  
-  if(event.isPatchChange()) {
+    std::cout << std::dec << number << " " << value;
+  } else if(event.isPatchChange()) {
+    // isPatchChange() and isTimbre() are the same
     int instrument = event.getP1();
-    std::cout << "PATCH-CHANGE " << std::dec << instrument ;
-  }
-  if(event.isNoteOn()) {
-    int note_number = event.getP1();
-    int base7, accidental;
-    event.getSpelling(base7, accidental);
-    std::cout << "NOTE: " 
-              << event.seconds << " "
-              << event.getDurationInSeconds() << " "
-              << std::dec
-              << base7 << " "
-              << accidental << " "
-              << mNoteNumbersToNames.find(note_number)->second;
+    std::cout << "PATCH-CHANGE " << std::dec << instrument;
+  } else if(event.isPitchbend()) {
+    int p1 = event.getP1();
+    std::cout << "PITCH-BEND " << std::dec << p1;
+  } else if(event.isMetaMessage()) {
+
+    if(event.isText()) {
+      std::string text = event.getMetaContent();
+      std::cout << "TEXT : " << std::dec << text;
+    } else if(event.isCopyright()) {
+      std::string text = event.getMetaContent();
+      std::cout << "COPYRIGHT : " << std::dec << text;
+    } else if(event.isTrackName()) {
+      std::string text = event.getMetaContent();
+      std::cout << "TRACK-NAME : " << std::dec << text;
+    } else if(event.isInstrumentName()) {
+      std::string text = event.getMetaContent();
+      std::cout << "INSTRUMENT-NAME : " << std::dec << text;
+    } else if(event.isLyricText()) {
+      std::string text = event.getMetaContent();
+      std::cout << "LYRIC-TEXT : " << std::dec << text;
+    } else if(event.isMarkerText()) {
+      std::string text = event.getMetaContent();
+      std::cout << "MARKER-TEXT : " << std::dec << text;
+    } else if(event.isTempo()) {
+      double tpq = 120; // FIXME: 120 is not always correct
+      //double tpmq = 24; // FIXME: 24 is not always correct
+      //double tspmq = 8; // FIXME: 8 is not always correct
+      double BPM = event.getTempoBPM();
+      double TPS = event.getTempoTPS(tpq);
+      double SPT = event.getTempoSPT(tpq);
+      std::cout << "TEMPO : " << std::dec << BPM << " bpm ";
+      std::cout << std::dec << TPS << " tps ";
+      std::cout << std::dec << SPT << " spt ";
+      
+    } else if(event.isTimeSignature()) {
+      int nn = (int)event[3];
+      int dd = (int)event[4];
+      int cc = (int)event[5]; // midi clocks per metronome click
+      int bb = (int)event[6]; // notated 32nds per midi quarter
+      int bottom = 1;
+      while(dd--) {
+        bottom *= 2;
+      }
+      std::cout << "TIME:SIG : "
+                << std::dec
+                << nn << "/" 
+                << bottom << " "
+                << cc << " "
+                << bb;
+    } else if(event.isKeySignature()) {
+      int key = (int)event[3];
+      int minor = (int)event[4];
+      std::cout << "KEY : " << std::dec << key << " " << minor;
+    } else if(event.isEndOfTrack()) {
+      std::cout << "EOT" ;
+    } else if(event.isMetaMessage() &&
+              event.getMetaType() == 0x21) {
+      int device_id = event.getP3();
+      std::cout << "DEVICE: " << std::dec << device_id ;
+    } else if(event.isMetaMessage() &&
+              event.getMetaType() == 0x7f) {
+      std::string text = event.getMetaContent();
+      std::cout << "Specific: " << std::dec << text ;
+    } else {
+      std::cout << std::endl;
+      DEBUG_INVALID("Unexpected META event.");
+    }
+  } else if(event.getCommandByte() == 0xf0){
+    std::cout << "System Exclusive: ";
+  } else {
+    std::cout << std::endl;
+    DEBUG_INVALID("Unexpected event.");
   }
   
   std::cout << std::endl;
+}
+
+void MidiReader::addMixer(MusicalScore& score) const {
+  unsigned int staff_count = score.getNumberOfStaves();
+  unsigned int staff_number;
+  double staff_weight = 1.0/staff_count;
+
+  Mixer mixer;
+  int channel_number;
+  for(channel_number = 0; channel_number < 2; channel_number++) {
+    Channel channel;
+    channel.setChannelNumber(channel_number);
+    for(staff_number = 0; staff_number < staff_count; staff_number++) {
+      channel.addStaff(score.getStaff(staff_number).getName(), staff_weight);
+    }
+    mixer.addChannel(channel);
+  }
+
+  score.getMixer() = mixer;
 }

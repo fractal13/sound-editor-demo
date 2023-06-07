@@ -19,6 +19,7 @@ public:
   void readTrack(smf::MidiFile& midifile, const int track, MusicalScore& score) const;
 
   void displayEventText(smf::MidiEvent& event) const;
+  void addMixer(MusicalScore& score) const;
 protected:
   std::map<int, std::string> mNoteNumbersToNames;
 private:

@@ -1,9 +1,8 @@
 #include "MusicalScore.h"
 #include "Envelope.h"
-#include <exception>
+#include "debug.h"
 #include <iostream>
-#include <sstream>
-#include <stdexcept>
+#include <set>
 
 MusicalScore::MusicalScore()
   : mTimeSignature(), mTempo(100.0), mStaves() {
@@ -12,9 +11,7 @@ MusicalScore::MusicalScore()
 MusicalScore::MusicalScore(const TimeSignature& time_signature, const double tempo)
   : mTimeSignature(time_signature), mTempo(tempo), mStaves() {
   if(mTempo <= 0.0) {
-    std::stringstream ss;
-    ss << "Tempo must be positive.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Tempo must be positive. '" << mTempo << "' is not positive.");
   }
 }
 
@@ -63,6 +60,24 @@ const MusicalStaff& MusicalScore::getStaff(const unsigned int index) const {
 
 unsigned int MusicalScore::getNumberOfStaves() const {
   return mStaves.size();
+}
+
+void MusicalScore::setUniqueStaffName(MusicalStaff& staff) const {
+  std::set<std::string> names;
+  for(const auto& s: mStaves) {
+    names.insert(s.getName());
+  }
+  int count = 0;
+  std::stringstream ss;
+  while(true) {
+    ss.str("");
+    ss << "unique-staff-" << count;
+    if(names.count(ss.str()) == 0) {
+      staff.setName(ss.str());
+      break;
+    }
+    count++;
+  }
 }
 
 Instrumentarium& MusicalScore::getInstrumentarium() {

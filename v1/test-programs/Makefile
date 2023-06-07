@@ -88,10 +88,27 @@ test-score-writer: mary-had-a-little-lamb.score the-bare-neccessities.score note
 notes.score: test_score_writer ../doc/notes.score
 	./test_score_writer ../doc/notes.score notes.score
 
-test-midi-reader: Beethoven-Moonlight-Sonata.score
+test-midi-reader: Beethoven-Moonlight-Sonata.score Queen-BohemianRhapsody.score \
+	Star-Wars-Theme.wav Movie_Themes_-_The_Pink_Panther_-_by_Henry_Mancini.wav
 
 Beethoven-Moonlight-Sonata.score: test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid
 	./test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid $@
+
+Queen-BohemianRhapsody.score: test_midi_reader ../doc/Queen-BohemianRhapsody.mid
+	./test_midi_reader ../doc/Queen-BohemianRhapsody.mid $@
+
+Star-Wars-Theme.score: test_midi_reader ../doc/Star-Wars-Theme.mid
+	./test_midi_reader ../doc/Star-Wars-Theme.mid $@
+
+Star-Wars-Theme.wav: Star-Wars-Theme.score
+	./test_score_reader 16 $< $@
+
+# Movie_Themes_-_The_Pink_Panther_-_by_Henry_Mancini
+%.wav: %.score
+	./test_score_reader 15 $< $@
+
+%.score: ../doc/%.mid test_midi_reader
+	./test_midi_reader $< $@
 
 # %.score: test_score_writer ../doc/%.score
 # 	./test_score_writer ../doc/$*.score $@

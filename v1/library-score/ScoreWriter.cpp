@@ -107,32 +107,55 @@ void ScoreWriter::writeStaffNote(std::ostream& os, const MusicalScore& score, co
   os << "    " << staff_note.getStart() << " " << formatNote(staff_note.getNote()) << std::endl;;
 }
 
-std::string ScoreWriter::formatNote(const Note& note) const {
-  std::stringstream ss;
-  std::string duration_letter = "";
-  double duration = note.getDuration();
-  double duration_dot = duration / 1.5;
-  if(duration == EIGHTH_NOTE) {
-    duration_letter = "e";
-  } else if(duration_dot == EIGHTH_NOTE) {
-    duration_letter = "e.";
-  } else if(duration == QUARTER_NOTE) {
-    duration_letter = "q";
-  } else if(duration_dot == QUARTER_NOTE) {
-    duration_letter = "q.";
-  } else if(duration == HALF_NOTE) {
-    duration_letter = "h";
-  } else if(duration_dot == HALF_NOTE) {
-    duration_letter = "h.";
-  } else if(duration == WHOLE_NOTE) {
-    duration_letter = "w";
-  } else if(duration_dot == WHOLE_NOTE) {
-    duration_letter = "w.";
-  } else {
+std::string ScoreWriter::getDurationLetter(const double duration) const {
+  std::map<std::string, double> durations = 
+    {
+     { "s", 1.0/16.0 },
+     { "e", 1.0/8.0 },
+     { "q", 1.0/4.0 },
+     { "h", 1.0/2.0 },
+     { "w", 1.0/1.0 },
+     { "s.", 1.5/16.0 },
+     { "e.", 1.5/8.0 },
+     { "q.", 1.5/4.0 },
+     { "h.", 1.5/2.0 },
+     { "w.", 1.5/1.0 },
+     { "st", 1.0/16.0/3.0 },
+     { "et", 1.0/8.0/3.0 },
+     { "qt", 1.0/4.0/3.0 },
+     { "ht", 1.0/2.0/3.0 },
+     { "wt", 1.0/1.0/3.0 },
+  };
+  std::string duration_letter = "X";
+  for(auto& d: durations) {
+    if(duration >= 0.65 * d.second && duration <= 1.50 * d.second) {
+      duration_letter = d.first;
+    }
+  }
+  if(duration_letter == "X") {
+    if(duration < 0.015) { // FIXME
+      duration_letter = "st";
+    } else if(duration > 1.5) { // FIXME
+      duration_letter = "w.";
+    }
+  }
+
+  if(duration_letter == "X") {
     std::stringstream ss;
-    ss << "Expected known not duration but got: '" << duration << "'." << " " << __FILE__ << ":" << __LINE__;
+    ss << "Expected known note duration but got: '" << duration << "'." << " " << __FILE__ << ":" << __LINE__ << std::endl;
+    for(auto& d: durations) {
+      ss << d.first << " " << d.second << std::endl;
+    }
+    
     throw std::invalid_argument(ss.str());
   }
+
+  return duration_letter;
+}
+
+std::string ScoreWriter::formatNote(const Note& note) const {
+  std::stringstream ss;
+  std::string duration_letter = getDurationLetter(note.getDuration());
   ss << duration_letter << note.getName();
   return ss.str();
 }

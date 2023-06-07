@@ -6,9 +6,8 @@
 #include "ADSREnvelope.h"
 #include "ADEnvelope.h"
 #include "AREnvelope.h"
-#include <sstream>
+#include "debug.h"
 #include <string>
-#include <stdexcept>
 
 ScoreReader::ScoreReader() {
 }
@@ -19,6 +18,7 @@ ScoreReader::~ScoreReader() {
 void ScoreReader::readScore(std::istream& is, MusicalScore& score) const {
   std::string word = "";
   int         integer;
+  double      number;
   while(is) {
     is >> word;
     if(!is) { break; }
@@ -28,8 +28,8 @@ void ScoreReader::readScore(std::istream& is, MusicalScore& score) const {
       score.getTimeSignature().setBeatsPerBar(integer);
       is >> integer;
       score.getTimeSignature().setBeatValue(integer);
-      is >> integer;
-      score.setTempo(integer);
+      is >> number;
+      score.setTempo(number);
     } else if(word == "STAFF") {
       unsigned int staff_index = score.createStaff();
       MusicalStaff& staff = score.getStaff(staff_index);
@@ -44,9 +44,7 @@ void ScoreReader::readScore(std::istream& is, MusicalScore& score) const {
     } else if(word == "SCORE-END") {
       break;
     } else {
-      std::stringstream ss;
-      ss << "Expected a keyword, but got: '" << word << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Expected a keyword, but got: '" << word << "'.");
     }
   }
   
@@ -62,9 +60,7 @@ void ScoreReader::readStaff(std::istream& is, MusicalScore& score, MusicalStaff&
   is >> instrument_name;
   instrument = score.getInstrumentarium().getInstrument(instrument_name);
   if(!instrument) {
-    std::stringstream ss;
-    ss << "Expected an instrument name, but got: '" << instrument_name << "'.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Expected an instrument name, but got: '" << instrument_name << "'.");
   }
   //std::cout << "staff read name: '" << name << "'" << std::endl;
   staff.setName(name);
@@ -110,9 +106,7 @@ MIXER-END
       readChannel(is, score, channel);
       mixer.addChannel(channel);
     } else {
-      std::stringstream ss;
-      ss << "Expected a CHANNEL clause, but got: '" << word << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Expected a CHANNEL clause, but got: '" << word << "'.");
     }
   }
 }
@@ -134,9 +128,7 @@ void ScoreReader::readChannel(std::istream& is, MusicalScore& score, Channel& ch
       is >> staff_name >> weight;
       channel.addStaff(staff_name, weight);
     } else {
-      std::stringstream ss;
-      ss << "Expected a STAFF clause, but got: '" << word << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Expected a STAFF clause, but got: '" << word << "'.");
     }
   }
 }
@@ -149,9 +141,15 @@ void ScoreReader::parseNote(const std::string& word, Note& note) const {
   if(word[1] == '.') {
     extension = 1.5;
     first_note = 2;
+  } else if(word[1] == 't') {
+    extension = 1.0/3.0;
+    first_note = 2;
   }
 
   switch(word[0]) {
+  case 's':
+    note.setDuration(SIXTEENTH_NOTE*extension);
+    break;
   case 'e':
     note.setDuration(EIGHTH_NOTE*extension);
     break;
@@ -163,6 +161,9 @@ void ScoreReader::parseNote(const std::string& word, Note& note) const {
     break;
   case 'w':
     note.setDuration(WHOLE_NOTE*extension);
+    break;
+  default:
+    DEBUG_INVALID("Expected a known note letter, but got: '" << word[0] << "'.");
     break;
   }
   
@@ -201,9 +202,7 @@ Instrument* ScoreReader::readInstrument(std::istream& is, MusicalScore& score) c
       } else if(word == "ENVELOPE") {
         envelope = readEnvelope(is, score);
       } else {
-        std::stringstream ss;
-        ss << "Unknown instrument parameter: '" << word << "'.";
-        throw std::invalid_argument(ss.str());
+        DEBUG_INVALID("Unknown instrument parameter: '" << word << "'.");
       }
       is >> word;
     }
@@ -214,9 +213,7 @@ Instrument* ScoreReader::readInstrument(std::istream& is, MusicalScore& score) c
   // Check end
   if(word != "INSTRUMENT-END") {
     delete instrument;
-    std::stringstream ss;
-    ss << "Expected 'INSTRUMENT-END' but got: '" << word << "'.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Expected 'INSTRUMENT-END' but got: '" << word << "'.");
   }
 
   return instrument;
@@ -233,9 +230,7 @@ Waveform* ScoreReader::readWaveform(std::istream& is, MusicalScore& score) const
 
   // Check end
   if(end != "WAVEFORM-END") {
-    std::stringstream ss;
-    ss << "Expected 'WAVEFORM-END' but got: '" << end << "'.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Expected 'WAVEFORM-END' but got: '" << end << "'.");
   }
 
   // Lookup if exists
@@ -252,9 +247,7 @@ Waveform* ScoreReader::readWaveform(std::istream& is, MusicalScore& score) const
     } else if(type == "triangle") {
       waveform = new TriangleWaveform(name);
     } else {
-      std::stringstream ss;
-      ss << "Unknown waveform type: '" << type << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Unknown waveform type: '" << type << "'.");
     }
 
     // Store, if didn't exist.
@@ -288,9 +281,7 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
     } else if(type == "AD") {
     } else if(type == "AR") {
     } else {
-      std::stringstream ss;
-      ss << "Unknown envelope type: '" << type << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Unknown envelope type: '" << type << "'.");
     }
 
     double maximum_amplitude = 1.0;
@@ -312,9 +303,7 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
       } else if(word == "RELEASE-SECONDS") {
         is >> release_seconds >> word;
       } else {
-        std::stringstream ss;
-        ss << "Unknown envelope parameter: '" << word << "'.";
-        throw std::invalid_argument(ss.str());
+        DEBUG_INVALID("Unknown envelope parameter: '" << word << "'.");
       }
     }
 
@@ -325,21 +314,23 @@ Envelope* ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const
     } else if(type == "AR") {
       envelope = new AREnvelope(name, maximum_amplitude, attack_seconds, sustain_amplitude, release_seconds);
     } else {
-      std::stringstream ss;
-      ss << "Unknown envelope type: '" << type << "'.";
-      throw std::invalid_argument(ss.str());
+      DEBUG_INVALID("Unknown envelope type: '" << type << "'.");
     }
     
     // Store, if didn't exist.
     score.getEnvelopes().addEnvelope(name, envelope->clone());
+  } else {
+    // read all words until envelope ends
+    while(is && word != "ENVELOPE-END") {
+      is >> word;
+    }
+    
   }
 
   // Check end
   if(word != "ENVELOPE-END") {
     delete envelope;
-    std::stringstream ss;
-    ss << "Expected 'ENVELOPE-END' but got: '" << word << "'.";
-    throw std::invalid_argument(ss.str());
+    DEBUG_INVALID("Expected 'ENVELOPE-END' but got: '" << word << "'.");
   }
   
   return envelope;

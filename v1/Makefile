@@ -2,6 +2,7 @@ all: build
 	make -C test-programs test-all
 
 build:
+	make -C library-debug install
 	make -C library-audiofiles install
 	make -C library-waveform install
 	make -C library-envelope install
@@ -11,6 +12,7 @@ build:
 	make -C test-programs
 
 clean:
+	make -C library-debug clean
 	make -C library-audiofiles clean
 	make -C library-waveform clean
 	make -C library-envelope  clean
