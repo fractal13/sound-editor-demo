@@ -1,0 +1,107 @@
+SCORE 4 4 160
+
+INSTRUMENT piano-right
+  WAVEFORM piano-triangle triangle
+  WAVEFORM-END
+
+  ENVELOPE piano-ar AD
+    MAXIMUM-AMPLITUDE 0.40
+    ATTACK-SECONDS 0.03
+  ENVELOPE-END
+INSTRUMENT-END
+
+INSTRUMENT piano-left
+  WAVEFORM piano-sawtooth sawtooth
+  WAVEFORM-END
+
+  ENVELOPE piano-adsr ADSR
+    MAXIMUM-AMPLITUDE 0.25
+    ATTACK-SECONDS 0.01
+    DECAY-SECONDS 0.02
+    SUSTAIN-AMPLITUDE 0.15
+    RELEASE-SECONDS 0.03
+  ENVELOPE-END
+INSTRUMENT-END
+
+
+
+STAFF melody piano-right
+0.25 qC4
+0.50 qD4
+0.75 qF4
+
+1.25 hF4
+1.25 hA4
+1.75 qE4
+1.75 qG#4
+
+2.00 qEb4
+2.00 qA4
+2.25 qG4
+2.50 qF4
+2.75 qF4
+
+3.00 qD4
+3.00 qG4
+3.25 qF4
+3.50 qD4
+3.50 qG4
+3.75 qF4
+
+4.00 qD4
+4.00 qG4
+4.25 qF4
+4.50 qD4
+4.75 qC4
+
+5.00 q.F4
+5.375 eC4
+5.50 qF4
+5.75 qA4
+
+6.00 wD4
+6.00 qD5
+6.25 qC5
+6.50 qBb4
+6.75 qA4
+
+7.00 wG4
+7.00 hD4
+7.50 hD#4
+STAFF-END
+
+STAFF harmony piano-left
+1.00 hA3
+1.00 hF3
+1.50 hC3
+
+2.00 wA3
+2.00 wF3
+
+3.00 wF3
+3.00 wBb2
+
+4.00 wAb3
+4.00 wBb2
+
+5.00 wA3
+5.00 wF3
+
+6.00 wC4
+6.00 wF#3
+
+7.00 wB3
+7.00 wF3
+STAFF-END
+
+MIXER
+  CHANNEL 0
+  STAFF melody 1.0
+  CHANNEL-END
+
+  CHANNEL 1
+  STAFF harmony 0.7
+  CHANNEL-END
+MIXER-END
+
+SCORE-END

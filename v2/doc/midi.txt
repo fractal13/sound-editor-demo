@@ -1,0 +1,26 @@
+TPQ: Ticks Per Quarter Note (This is a per file parameter)
+     Ticks are the time measurements used in event data.
+BPM: Beats Per Minute (This gets updated from time to time in the timing track).
+     What is a beat?
+SPT: Seconds Per Tick
+
+int cc = (int)event[5]; // midi clocks per metronome click
+Usually 24.
+Is a metronome click a midi quarter note?
+
+int bb = (int)event[6]; // notated 32nds per midi quarter
+Usually 8.
+So, a notated quarter note is a midi quarter note, or 24 ticks.
+
+
+if a midi quarter note is 24 ticks; then
+whole note = 96 ticks
+half note = 48 ticks
+quarter note = 24 ticks
+eighth note =  12 ticks
+dotted eighth note =  18 ticks
+dotted quarter note =  36 ticks
+dotted half note =  72 ticks
+
+
+
