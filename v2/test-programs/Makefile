@@ -90,7 +90,8 @@ notes.score: test_score_writer ../doc/notes.score
 	./test_score_writer ../doc/notes.score notes.score
 
 test-midi-reader: Beethoven-Moonlight-Sonata.score Queen-BohemianRhapsody.score \
-	Star-Wars-Theme.wav Movie_Themes_-_The_Pink_Panther_-_by_Henry_Mancini.wav
+	Star-Wars-Theme.wav Movie_Themes_-_The_Pink_Panther_-_by_Henry_Mancini.wav \
+	moog.wav
 
 Beethoven-Moonlight-Sonata.score: test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid
 	./test_midi_reader ../doc/Beethoven-Moonlight-Sonata.mid $@

@@ -4,6 +4,7 @@
 #include "SquareWaveform.h"
 #include "TriangleWaveform.h"
 #include "FMSynthesisWaveform.h"
+#include "MixedWaveform.h"
 #include "ADSREnvelope.h"
 #include "ADEnvelope.h"
 #include "AREnvelope.h"
@@ -248,6 +249,8 @@ Waveform* ScoreReader::readWaveform(std::istream& is, MusicalScore& score) const
       waveform = new TriangleWaveform(name);
     } else if(type == "fm-synthesis") {
       waveform = new FMSynthesisWaveform(name);
+    } else if(type == "mixed") {
+      waveform = new MixedWaveform(name);
     } else {
       DEBUG_INVALID("Unknown waveform type: '" << type << "'.");
     }
@@ -270,6 +273,18 @@ Waveform* ScoreReader::readWaveform(std::istream& is, MusicalScore& score) const
         FMSynthesisWaveform *w = dynamic_cast<FMSynthesisWaveform *>(waveform);
         if(w) {
           w->setFrequencyRatio(number);
+        }
+      } else if(word == "AMPLITUDE") {
+        is >> number;
+        waveform->setAmplitude(number);
+      } else if(word == "FREQUENCY-OFFSET") {
+        is >> number;
+        waveform->setFrequencyOffset(number);
+      } else if(word == "WAVEFORM") {
+        Waveform *sub_waveform = readWaveform(is, score);
+        MixedWaveform *w = dynamic_cast<MixedWaveform *>(waveform);
+        if(w) {
+          w->addWaveform(sub_waveform);
         }
       } else {
         DEBUG_INVALID("Unknown waveform parameter: '" << word << "'.");

@@ -13,6 +13,7 @@ double FMSynthesisWaveform::generateOneSample(const double frequency, const int 
   double modulator_angle = computeSampleAngle(modulator_frequency, sample_number, samples_per_second);
   double angle = computeSampleAngle(frequency, sample_number, samples_per_second);
   double value  = std::sin(angle + mBeta*modulator_angle);
+  value *= mAmplitude;
   return value;
 }
 

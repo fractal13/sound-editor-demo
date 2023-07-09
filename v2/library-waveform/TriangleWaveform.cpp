@@ -19,6 +19,7 @@ double TriangleWaveform::generateOneSample(const double frequency, const int sam
   } else {
     value = 4.0 * (cycle_position - 0.75) - 1.0;
   }
+  value *= mAmplitude;
   return value;
 }
 

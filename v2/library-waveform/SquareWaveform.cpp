@@ -17,6 +17,7 @@ double SquareWaveform::generateOneSample(const double frequency, const int sampl
   } else {
     value = -1.0;
   }
+  value *= mAmplitude;
   return value;
 }
 

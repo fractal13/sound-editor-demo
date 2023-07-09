@@ -16,6 +16,7 @@ double SawtoothWaveform::generateOneSample(const double frequency, const int sam
   } else {
     value = 2.0 * (cycle_position - 0.5) - 1.0;
   }
+  value *= mAmplitude;
   return value;
 }
 
