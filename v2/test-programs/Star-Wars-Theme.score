@@ -1,0 +1,826 @@
+SCORE 3 4 125
+
+  INSTRUMENT midi-instrument-33
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-48
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-60
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-61
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-63
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-71
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  INSTRUMENT midi-instrument-73
+    WAVEFORM sine sine
+    WAVEFORM-END
+    ENVELOPE ADSR ADSR
+      MAXIMUM-AMPLITUDE 0.5
+      ATTACK-SECONDS 0.01
+      DECAY-SECONDS 0.01
+      SUSTAIN-AMPLITUDE 0.3
+      RELEASE-SECONDS 0.01
+    ENVELOPE-END
+  INSTRUMENT-END
+
+  STAFF FINGERDBAS midi-instrument-33
+    8.71875 qF3
+    8.96875 etF3
+    9.05208 etF3
+    9.13542 etF3
+    9.21875 qF3
+    9.46875 etF3
+    9.55208 stF3
+    9.63542 stF3
+    9.72135 qF3
+    9.96875 stF3
+    10.0521 stF3
+    10.1354 stF3
+    10.2188 stF3
+    10.3021 stF3
+    10.3854 etF3
+    10.4688 etF3
+    10.5521 stF3
+    10.6354 etF3
+    10.7214 qF3
+    10.9688 stF3
+    11.0521 stF3
+    11.1354 stF3
+    11.2188 qF3
+    11.4688 stF3
+    11.5521 stF3
+    11.6354 etF3
+    11.7214 s.F3
+  STAFF-END
+
+  STAFF BRASS_1 midi-instrument-61
+    0.75 stC5
+    0.802083 stG4
+    0.885417 sC5
+    0.96875 sD5
+    1.05208 sC5
+    1.13542 h.G5
+    1.80208 stF5
+    1.88542 stG5
+    1.96875 qC6
+    2.21875 sA#5
+    2.30208 sA5
+    2.38542 sG5
+    2.46875 sA5
+    2.55208 sF5
+    2.63542 wG5
+    3.30208 sG4
+    3.38542 etC5
+    3.46875 sF5
+    3.55208 etC5
+    3.63542 qG5
+    3.80208 etC5
+    3.88542 sF5
+    3.96875 sA5
+    4.05208 etC5
+    4.13802 sF5
+    4.22396 wtG5
+    4.47135 sG4
+    4.47135 stG5
+    4.55469 etG5
+    4.55469 stG4
+    4.63802 s.G5
+    4.63802 s.G4
+    4.72396 qC4
+    4.72656 qC5
+    4.96875 sC4
+    4.96875 s.C5
+    5.15625 s.C4
+    5.15625 sC5
+    5.21875 wtG5
+    5.21875 wtG4
+    5.59375 s.F4
+    5.59375 sF5
+    5.65625 s.G4
+    5.65625 sG5
+    5.72135 s.A4
+    5.72135 s.A5
+    5.88542 etF5
+    5.88542 sF4
+    5.97135 wtG4
+    5.97135 wtG5
+    6.47135 sG5
+    6.47135 sG4
+    6.63542 sG4
+    6.63542 sG5
+    6.71875 wtA#4
+    6.71875 wtG5
+    6.72135 wtD#5
+    6.72135 wtA#5
+    7.21875 s.G4
+    7.21875 s.G5
+    7.22135 s.E5
+    7.22135 s.C5
+    7.46875 sG4
+    7.46875 sG5
+    7.46875 sE5
+    7.46875 sC5
+    7.63542 sG4
+    7.63542 etC5
+    7.63542 etE5
+    7.63542 etG5
+    7.72135 sA#4
+    7.72396 sG5
+    7.72396 sD#5
+    7.72396 sA#5
+    7.88802 stA#5
+    7.88802 sA#4
+    7.88802 stD#5
+    7.89062 stG5
+    7.97135 wA5
+    7.97396 wC5
+    7.97396 wF5
+    7.97396 wC6
+    8.72135 qF3
+    8.97135 etF3
+    9.05469 stF3
+    9.13802 etF3
+    9.22135 qA#3
+    9.47135 etA#3
+    9.55469 stA#3
+    9.63802 stA#3
+    9.72656 wtC4
+    9.97135 stD#4
+    10.0547 stD#4
+    10.138 etD#4
+    10.2214 sG#4
+    10.3047 stG#4
+    10.3906 etG#4
+    10.474 etD#5
+    10.5573 stD#5
+    10.6406 etD#5
+    10.7266 qF5
+    10.7266 qF4
+    10.974 stF4
+    10.974 etF5
+    11.0547 stF4
+    11.0573 stF5
+    11.1406 sF4
+    11.1406 etF5
+    11.224 qA#4
+    11.224 qA#5
+    11.4766 stD#5
+    11.4766 stD#6
+    11.5573 stD#5
+    11.5573 stD#6
+    11.6406 s.D#5
+    11.6406 etD#6
+    11.7266 s.F5
+    11.7292 s.F6
+  STAFF-END
+
+  STAFF FR.HORN midi-instrument-60
+    0.802083 etC4
+    0.885417 sF4
+    0.96875 s.G4
+    1.05208 sF4
+    1.13542 qG4
+    1.30208 sF4
+    1.38542 sG4
+    1.46875 htC5
+    1.63542 s.A#4
+    1.80208 sA4
+    1.88542 sG4
+    1.96875 s.A4
+    2.05208 etF4
+    2.13542 qG4
+    2.30208 sC4
+    2.38542 sF4
+    2.46875 wtG4
+    2.80208 etF4
+    2.88542 sG4
+    2.96875 s.A4
+    3.05208 etF4
+    3.13542 qG4
+    3.30208 sC4
+    3.38542 sF4
+    3.46875 sG4
+    3.55208 sA4
+    3.63542 qA#4
+    3.80208 sA4
+    3.88802 sG4
+    3.97135 wtA4
+    4.21875 q.G4
+    4.21875 stA4
+    8.71875 qF3
+    8.96875 sF3
+    9.05208 etF3
+    9.13542 sF3
+    9.21875 qF3
+    9.21875 qA#3
+    9.46875 etA#3
+    9.46875 etF3
+    9.55208 etA#3
+    9.55208 etF3
+    9.63542 etA#3
+    9.63542 etF3
+    9.72396 qA#3
+    9.72396 qC4
+    9.72396 qF3
+    9.96875 etD#4
+    9.96875 stA#3
+    9.97135 stC4
+    9.97135 stF3
+    10.0521 stD#4
+    10.0521 stA#3
+    10.0521 stC4
+    10.0547 stF3
+    10.1354 etD#4
+    10.1354 stA#3
+    10.1354 stC4
+    10.138 stF3
+    10.2188 sG#4
+    10.2188 etA#3
+    10.2188 etC4
+    10.2214 etD#4
+    10.2214 stF3
+    10.3021 stG#4
+    10.3021 etA#3
+    10.3021 stC4
+    10.3047 stD#4
+    10.3047 stF3
+    10.3854 stA#3
+    10.3854 etG#4
+    10.3854 stC4
+    10.388 stD#4
+    10.388 stF3
+    10.4688 sD#5
+    10.4688 etG#4
+    10.4688 stA#3
+    10.4714 etD#4
+    10.4714 stC4
+    10.4714 stF3
+    10.5521 etD#5
+    10.5521 stG#4
+    10.5547 stA#3
+    10.5547 stD#4
+    10.5547 stC4
+    10.5547 stF3
+    10.6354 sD#5
+    10.6354 sG#4
+    10.6354 sD#4
+    10.638 etA#3
+    10.638 etC4
+    10.638 etF3
+    10.7214 qA#3
+    10.724 qF4
+    10.724 qD#4
+    10.724 qF3
+    10.9688 stA#4
+    10.9688 etA#3
+    10.9714 sF4
+    10.9714 stD#4
+    10.9714 stF3
+    11.0521 etA#4
+    11.0521 etF4
+    11.0521 etA#3
+    11.0547 stD#4
+    11.0547 stF3
+    11.1354 sA#4
+    11.1354 etF4
+    11.138 stA#3
+    11.138 stD#4
+    11.138 stF3
+    11.2188 qA#4
+    11.2188 qA#3
+    11.2188 qD#4
+    11.2214 qF4
+    11.2214 wtC5
+    11.2214 qF3
+    11.4714 stD#5
+    11.4714 stA#4
+    11.474 stC5
+    11.474 stF4
+    11.474 stA#3
+    11.474 stF3
+    11.474 stD#4
+    11.4766 stG#3
+    11.5521 stA#3
+    11.5521 stD#4
+    11.5547 etC5
+    11.5547 stF3
+    11.5547 stA#4
+    11.5547 stD#5
+    11.5547 stF4
+    11.6354 sA#3
+    11.6354 stF3
+    11.6354 etD#4
+    11.638 sD#5
+    11.638 etF4
+    11.638 sC5
+    11.638 etA#4
+    11.7214 s.A#3
+    11.724 s.F5
+    11.724 s.C5
+    11.724 s.F4
+    11.724 s.D#4
+    11.7266 s.F3
+    11.7266 s.A#4
+    11.7266 stD#5
+  STAFF-END
+
+  STAFF STRINGS midi-instrument-48
+    0.752604 w.C2
+    0.752604 w.C1
+    2.71875 wC1
+    2.71875 wC2
+    3.71875 qG1
+    3.71875 qG2
+    3.96875 sG1
+    3.96875 sG2
+    4.05208 etG1
+    4.05208 etG2
+    4.13542 etG1
+    4.13542 etG2
+    4.22135 qG1
+    4.22135 qG2
+    4.46875 sG2
+    4.46875 sG1
+    4.55208 stG2
+    4.55208 etG1
+    4.63542 sG2
+    4.63542 s.G1
+    4.72135 qC3
+    4.72396 qC2
+    4.72396 qC1
+  STAFF-END
+
+  STAFF FLUTE midi-instrument-73
+    5.96615 sG5
+    5.96615 sG4
+    6.01302 sA5
+    6.01302 sA4
+    6.05208 etB5
+    6.05208 etB4
+    6.09115 sC6
+    6.09115 sC5
+    6.1224 sD6
+    6.1224 sD5
+    6.15885 etE6
+    6.16146 stE5
+    6.1901 sF6
+    6.19271 sF5
+    6.22917 sG6
+    6.22917 sG5
+    6.26562 stA6
+    6.26562 etA5
+    6.29427 sB6
+    6.29688 sB5
+    6.33333 sC7
+    6.33333 sC6
+    6.36979 stD7
+    6.36979 stD6
+    6.40625 etE7
+    6.40625 etE6
+    6.42969 sF7
+    6.42969 sF6
+    6.46354 sG7
+    6.46354 sG6
+  STAFF-END
+
+  STAFF CLARINET midi-instrument-71
+    5.96875 sG3
+    6.01302 sA3
+    6.05469 etB3
+    6.09115 sC4
+    6.125 sD4
+    6.16146 etE4
+    6.19271 sF4
+    6.23177 sG4
+    6.26562 etA4
+    6.29688 sB4
+    6.33333 sC5
+    6.36979 stD5
+    6.40625 etE5
+    6.42969 sF5
+    6.46615 etG5
+  STAFF-END
+
+  STAFF SYNBRASS_2 midi-instrument-63
+    4.71875 wG2
+    4.71875 w.C4
+    4.72135 wE3
+    4.72135 wC2
+    5.71875 s.F3
+    5.71875 s.A#2
+    5.71875 s.A#3
+    5.72135 s.D4
+    5.96875 wtG2
+    5.96875 wtE3
+    5.96875 wtC4
+    5.97135 wtC2
+    6.46875 s.E3
+    6.46875 s.G2
+    6.47135 s.C4
+    6.47135 s.C2
+    6.96875 s.A#2
+    6.96875 s.D#2
+    6.96875 s.D#4
+    6.97135 s.A#3
+    6.97135 s.G3
+    7.22135 wtG2
+    7.22396 wtE3
+    7.22396 wtC4
+    7.22396 wtC2
+    7.71875 s.D#4
+    7.71875 sG3
+    7.72135 s.A#2
+    7.72135 s.D#2
+    7.88542 etD#2
+    7.88542 stA#2
+    7.88542 sD#4
+    7.88802 etG3
+    7.96875 h.A3
+    7.96875 h.F2
+    7.97135 h.C3
+    7.97135 h.F4
+    8.72135 wF2
+    8.72135 wF3
+    9.71875 wF2
+    9.72135 wF3
+    10.7188 wC4
+    10.7188 wF4
+    10.7214 wF3
+    10.7214 wF2
+    11.7188 s.F4
+    11.7188 s.C4
+    11.7214 s.F3
+    11.7214 s.F2
+  STAFF-END
+
+  STAFF DRUMS midi-instrument-48
+    0.752604 stA3
+    0.752604 stC3
+    0.755208 stE2
+    0.755208 stD2
+    0.78125 stD2
+    0.8125 stD2
+    0.84375 stD2
+    0.872396 stD2
+    0.90625 stD2
+    0.9375 stD2
+    0.96875 sE2
+    1.13542 sE2
+    1.21875 sE2
+    1.38542 sE2
+    1.46875 sE2
+    1.55208 sD2
+    1.63542 sE2
+    1.70833 stA3
+    1.71875 sC3
+    1.71875 sE2
+    1.80208 sD2
+    1.88542 sE2
+    1.96875 stD2
+    1.96875 sE2
+    1.98958 stD2
+    2.01042 stD2
+    2.03125 stD2
+    2.05208 stD2
+    2.07292 stD2
+    2.09375 stD2
+    2.11458 stD2
+    2.13542 stD2
+    2.15625 stD2
+    2.17708 stD2
+    2.19792 stD2
+    2.21875 sE2
+    2.38542 sD2
+    2.46875 etG2
+    2.46875 sE2
+    2.55208 sD2
+    2.63542 etG2
+    2.63542 sE2
+    2.71354 stA3
+    2.71875 s.C3
+    2.72135 sE2
+    2.96875 sE2
+    3.04948 sE2
+    3.13542 sE2
+    3.21875 stD2
+    3.21875 sE2
+    3.23958 stD2
+    3.26042 stD2
+    3.28125 stD2
+    3.30208 stD2
+    3.32292 stD2
+    3.34375 stD2
+    3.36458 stD2
+    3.38542 stD2
+    3.40625 stD2
+    3.42708 stD2
+    3.44792 stD2
+    3.46875 sC3
+    3.46875 sE2
+    3.55208 sD2
+    3.63542 sC3
+    3.63542 sE2
+    3.71354 etA3
+    3.71875 sG2
+    3.72135 sD2
+    3.80208 sE2
+    3.88802 sD2
+    3.96875 etG2
+    3.97135 sE2
+    4.05208 etG2
+    4.13542 sD2
+    4.13542 sG2
+    4.21875 stD2
+    4.22135 sE2
+    4.22135 sG2
+    4.23958 stD2
+    4.26042 stD2
+    4.28125 stD2
+    4.30208 stD2
+    4.32292 stD2
+    4.34375 stD2
+    4.36458 stD2
+    4.38542 stD2
+    4.40365 stD2
+    4.42708 stD2
+    4.44792 stD2
+    4.46875 sD2
+    4.46875 etG2
+    4.55208 sE2
+    4.55208 stG2
+    4.63542 sD2
+    4.63542 etG2
+    4.72135 sE2
+    4.72396 sC3
+    4.96875 sE2
+    5.05208 sD2
+    5.13542 sE2
+    5.21875 sD2
+    5.38542 stC3
+    5.45312 etA3
+    5.46875 sE2
+    5.46875 sC3
+    5.63542 sD2
+    5.72135 s.E2
+    5.97135 sE2
+    6.05208 sD2
+    6.13542 sE2
+    6.21875 stD2
+    6.21875 stD2
+    6.23958 stD2
+    6.26042 stD2
+    6.28125 stD2
+    6.30208 stD2
+    6.32292 stD2
+    6.34375 stD2
+    6.36458 stD2
+    6.38542 stD2
+    6.40625 stD2
+    6.42708 stD2
+    6.44792 stD2
+    6.46875 sC3
+    6.47135 stD2
+    6.48958 stD2
+    6.51042 stD2
+    6.53125 stD2
+    6.55208 stD2
+    6.57292 stD2
+    6.59375 stD2
+    6.61458 stD2
+    6.63542 stD2
+    6.65625 stD2
+    6.67708 stD2
+    6.69792 stD2
+    6.71875 etD2
+    6.96615 etA3
+    6.96875 sD#3
+    6.97135 sE2
+    7.13281 etD2
+    7.21875 stD2
+    7.22135 sC3
+    7.22396 etE2
+    7.23958 stD2
+    7.26042 stD2
+    7.28125 stD2
+    7.30208 stD2
+    7.32292 stD2
+    7.34375 stD2
+    7.36458 stD2
+    7.38542 stD2
+    7.40625 stD2
+    7.42708 stD2
+    7.44792 stD2
+    7.47135 stD2
+    7.48958 stD2
+    7.51042 stD2
+    7.53125 stD2
+    7.55208 stD2
+    7.57292 stD2
+    7.59375 stD2
+    7.61458 stD2
+    7.63802 stD2
+    7.65625 stD2
+    7.67708 stD2
+    7.69792 stD2
+    7.71875 sD#3
+    7.72135 sE2
+    7.88542 sD#3
+    7.88802 stD2
+    7.96875 stD2
+    7.96875 sF2
+    7.97135 sE2
+    7.98958 stD2
+    8.01042 stD2
+    8.03125 stD2
+    8.05208 stD2
+    8.07292 stD2
+    8.09375 stD2
+    8.11458 stD2
+    8.13542 stD2
+    8.15625 stD2
+    8.17708 stD2
+    8.19792 stD2
+    8.21875 stB3
+    8.21875 stD2
+    8.23958 stD2
+    8.25 stA3
+    8.26042 stD2
+    8.28125 stB3
+    8.28125 stD2
+    8.30208 stD2
+    8.3125 stA3
+    8.32292 stD2
+    8.34375 stB3
+    8.34375 stD2
+    8.36458 stD2
+    8.375 stA3
+    8.38542 stD2
+    8.40625 stB3
+    8.40625 stD2
+    8.42708 stD2
+    8.4375 stA3
+    8.44792 stD2
+    8.46875 stB3
+    8.46875 stD2
+    8.48958 stD2
+    8.5 stA3
+    8.51042 stD2
+    8.53125 stB3
+    8.53125 stD2
+    8.55208 stD2
+    8.5625 stA3
+    8.57031 stD2
+    8.59375 stB3
+    8.59375 stD2
+    8.61458 stD2
+    8.625 stA3
+    8.63542 stD2
+    8.65625 stB3
+    8.65625 stD2
+    8.67708 stD2
+    8.6875 stA3
+    8.69792 stD2
+    8.70573 stA3
+    8.71875 s.F2
+    8.72135 sE2
+    8.96875 etF2
+    8.96875 sE2
+    9.05208 etF2
+    9.05208 sD2
+    9.13542 etF2
+    9.13542 sE2
+    9.21875 etF2
+    9.22135 sD2
+    9.46875 etF2
+    9.47135 etE2
+    9.55208 stF2
+    9.55469 etD2
+    9.63542 stF2
+    9.63802 etE2
+    9.72396 etF2
+    9.72656 sD2
+    9.97135 stF2
+    9.97135 sE2
+    10.0547 stF2
+    10.0547 sD2
+    10.138 stF2
+    10.138 etE2
+    10.2214 etF2
+    10.2214 etD2
+    10.3047 etF2
+    10.3047 sE2
+    10.388 stF2
+    10.388 etD2
+    10.4714 etF2
+    10.4714 etE2
+    10.5547 etF2
+    10.5573 stD2
+    10.638 etF2
+    10.638 etE2
+    10.724 etF2
+    10.7266 etD2
+    10.9714 stF2
+    10.974 etE2
+    11.0547 etF2
+    11.0547 etD2
+    11.138 stF2
+    11.138 etE2
+    11.2214 etF2
+    11.2214 etD2
+    11.4766 stF2
+    11.4766 etE2
+    11.5573 etF2
+    11.5573 stD2
+    11.638 stF2
+    11.6406 stE2
+    11.7083 etA3
+    11.7266 etF2
+    11.7266 stD2
+  STAFF-END
+
+  MIXER
+    CHANNEL 0
+      STAFF BRASS_1 0.125
+      STAFF CLARINET 0.125
+      STAFF DRUMS 0.125
+      STAFF FINGERDBAS 0.125
+      STAFF FLUTE 0.125
+      STAFF FR.HORN 0.125
+      STAFF STRINGS 0.125
+      STAFF SYNBRASS_2 0.125
+    CHANNEL-END
+    CHANNEL 1
+      STAFF BRASS_1 0.125
+      STAFF CLARINET 0.125
+      STAFF DRUMS 0.125
+      STAFF FINGERDBAS 0.125
+      STAFF FLUTE 0.125
+      STAFF FR.HORN 0.125
+      STAFF STRINGS 0.125
+      STAFF SYNBRASS_2 0.125
+    CHANNEL-END
+  MIXER-END
+
+
+SCORE-END
