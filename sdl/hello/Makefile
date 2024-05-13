@@ -12,7 +12,7 @@ COMMON_OBJECTS := $(patsubst %.cpp,%.o,$(COMMON_SRCS))
 LIBRARY_FILES :=
 INCLUDE_FILES := $(wildcard ../include/*.h)
 TARGETS := \
-	main main_event main_mixer
+	main main_event main_mixer main_button
 
 all: $(TARGETS)
 
@@ -23,6 +23,9 @@ main_event: main_event.o
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 main_mixer: main_mixer.o
+	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
+
+main_button: main_button.o
 	$(CXX) $(CXXFLAGS) -o $@ $< $(COMMON_OBJECTS) $(LDFLAGS)
 
 
